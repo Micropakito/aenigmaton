@@ -1,0 +1,37 @@
+AENIGMATON — juegos de lógica, versión instalable (PWA)
+
+Archivos:
+  index.html              la aplicación
+  manifest.webmanifest    nombre, icono y colores de la app
+  sw.js                   permite usarla sin conexión
+  icon-*.png              iconos
+
+CÓMO PUBLICARLA EN GITHUB PAGES
+1. Crea un repositorio nuevo en GitHub (por ejemplo "aenigmaton").
+2. Sube todos estos archivos a la raíz del repositorio.
+3. Settings → Pages → Source: "Deploy from a branch", rama main, carpeta / (root). Guardar.
+4. En un par de minutos estará en https://TU-USUARIO.github.io/aenigmaton/
+
+CÓMO INSTALARLA EN ANDROID
+1. Abre esa dirección en Chrome.
+2. Menú ⋮ → "Instalar aplicación" (o "Añadir a pantalla de inicio" → Instalar).
+3. Aparecerá el icono "Aenigmaton" y se abrirá a pantalla completa, también sin conexión.
+
+ACTUALIZAR
+Sustituye index.html en el repositorio y, en sw.js, cambia VERSION (aenigmaton-v1 → aenigmaton-v2).
+La próxima vez que abras la app con conexión cogerá la versión nueva.
+
+NOTA: las partidas, récords e historial se guardan en el propio móvil, dentro de la app instalada.
+
+ESTADÍSTICAS DE USO (opcional, sin cookies)
+1. Crea una cuenta gratuita en https://www.goatcounter.com (gratis para uso no comercial).
+   Elige un código, por ejemplo "aenigmaton" → tu panel será https://aenigmaton.goatcounter.com
+2. En index.html, busca la línea  window.AENIGMATON_STATS = '';  y pon tu código:
+      window.AENIGMATON_STATS = 'aenigmaton';
+3. Súbelo a GitHub y cambia la VERSION de sw.js como en cualquier actualización.
+Qué verás en el panel:
+  - Visitantes únicos y visitas por día, país, navegador, móvil/ordenador.
+  - Páginas: /  (portada), /hitori, /kakuro… (qué juegos se abren).
+  - Eventos: nuevo-hitori-6 (partida nueva de Hitori 6×6), resuelto-kakuro-7 (resuelto), etc.
+No se guarda nada personal ni se usan cookies, así que no hace falta aviso de cookies.
+Las partidas jugadas sin conexión no se cuentan.
