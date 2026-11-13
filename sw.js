@@ -1,6 +1,6 @@
 // Aenigmaton: funciona sin conexión.
 // Al publicar una versión nueva, cambia VERSION para que los móviles la descarguen.
-const VERSION = 'aenigmaton-v3';
+const VERSION = 'aenigmaton-v4';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

@@ -331,6 +331,95 @@ details ol,details ul{padding-left:1.2em;margin:.5em 0}
 .sec{width:var(--B);margin:10px 0 -2px;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
 .sec::after{content:"";flex:1;height:1px;background:var(--line)}
 
+/* Rejillas de sombrear (Heyawake, Norinori, Akari, Yin-Yang) */
+.board.shg{touch-action:none}
+.board.shg .fc{position:relative;color:var(--ink);font-weight:800}
+.board.shg .fc.v1{background:var(--shade);color:var(--shade-ink)}
+.board.shg .fc.v1.e{background:#8a2e2a}
+.board.shg .fc.e:not(.v1){background:color-mix(in srgb,var(--err) 18%,var(--card))}
+.board.shg .dt{width:20%;height:20%;border-radius:50%;background:var(--muted)}
+.board.shg .rn{position:absolute;left:6%;top:3%;font-size:calc(var(--B) / var(--n) * .32);line-height:1;color:var(--ink)}
+.board.shg .fc.v1 .rn{color:var(--shade-ink)}
+.board.shg.won .fc:not(.v1):not(.bl){background:color-mix(in srgb,var(--ok) 16%,var(--card))}
+.board.ak .fc.bl{background:var(--kb);color:var(--kb-ink);font-size:calc(var(--B) / var(--n) * .46)}
+.board.ak .fc.bl.ok{color:color-mix(in srgb,var(--kb-ink) 45%,var(--kb))}
+.board.ak .fc.bl.e{color:#ff8a80}
+.board.ak .fc.lit{background:#fbe9a6}
+@media (prefers-color-scheme:dark){.board.ak .fc.lit{background:#5a4a1c}}
+.board.ak .fc.lt::after{content:"";width:58%;height:58%;border-radius:50%;background:#f2c230;box-shadow:inset 0 0 0 2px #8a6a10}
+.board.ak .fc.lt.e::after{background:var(--err)}
+.board.yy .fc.v1{background:var(--card)}
+.board.yy .fc.k{background:var(--done)}
+.board.yy .fc.v1::after,.board.yy .fc.v2::after{content:"";width:72%;height:72%;border-radius:50%;box-sizing:border-box}
+.board.yy .fc.v1::after{background:var(--ink)}
+.board.yy .fc.v2::after{background:var(--card);border:2px solid var(--ink)}
+.board.yy .fc.e::after{box-shadow:0 0 0 3px var(--err)}
+.board.yy.won .fc{background:color-mix(in srgb,var(--ok) 14%,var(--card))}
+
+/* Nonograma y Kakurasu */
+.board.ng{aspect-ratio:auto;touch-action:none}
+.board.ng svg{width:100%;height:auto;display:block}
+.board.ng .bg{fill:var(--card)}
+.board.ng .zb{fill:color-mix(in srgb,var(--ink) 5%,transparent)}
+.board.ng .nc{font-size:.42px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.board.ng .nc.ok{fill:var(--muted);font-weight:500}
+.board.ng .fi{fill:var(--ink)}
+.board.ng .fi.e{fill:var(--err)} .board.ng .fi.h{fill:var(--hint)}
+.board.ng .xm{stroke:var(--muted);stroke-width:.07;stroke-linecap:round}
+.board.ng .xm.e{stroke:var(--err)}
+.board.ng .hl{fill:color-mix(in srgb,var(--hint) 50%,transparent)}
+.board.ng .gl{stroke:var(--line);stroke-width:.03}
+.board.ng .gl5{stroke:var(--muted);stroke-width:.06}
+.board.ng .fr{fill:none;stroke:var(--ink);stroke-width:.08}
+.board.ng.won .fi{fill:var(--ok)}
+.board.ng.ku .ix{font-size:.36px;font-weight:600;fill:var(--muted);text-anchor:middle;dominant-baseline:central}
+.board.ng.ku .sm{font-size:.44px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central}
+.board.ng.ku .sm.ok{fill:var(--muted);font-weight:500} .board.ng.ku .sm.e{fill:var(--err)}
+
+/* Shakashaka */
+.board.sh svg{width:100%;height:100%;display:block}
+.board.sh .bg{fill:var(--card)}
+.board.sh .hl{fill:color-mix(in srgb,var(--hint) 45%,transparent)}
+.board.sh .gl{stroke:var(--line);stroke-width:.025}
+.board.sh .bk{fill:var(--ink)}
+.board.sh .nm{font-size:.48px;font-weight:800;fill:var(--card);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.board.sh .nm.ok{fill:var(--muted)} .board.sh .nm.e{fill:#ff8a80}
+.board.sh .tr{fill:var(--user)}
+.board.sh .dt{fill:var(--muted)}
+.board.sh .bad{fill:var(--err)}
+.board.sh .fr{fill:none;stroke:var(--ink);stroke-width:.08}
+.board.sh.won .tr{fill:var(--ok)}
+
+/* Tatamibari (usa el estilo de Shikaku) */
+.board.sk.tb .cl{font-size:.55px}
+.board.sk .bad{fill:var(--err)}
+
+/* Tentaisho */
+.board.tn{touch-action:none}
+.board.tn svg{width:100%;height:100%;display:block}
+.board.tn .bg{fill:var(--card)}
+.board.tn .gx{fill:hsl(var(--h) 60% 85%)}
+@media (prefers-color-scheme:dark){.board.tn .gx{fill:hsl(var(--h) 30% 30%)}}
+.board.tn .gx.e{fill:color-mix(in srgb,var(--err) 40%,var(--card))}
+.board.tn .gx.h{fill:var(--hint)}
+.board.tn .gl{stroke:var(--line);stroke-width:.025}
+.board.tn .wl{stroke:var(--ink);stroke-width:.07;stroke-linecap:round}
+.board.tn .dot{fill:var(--card);stroke:var(--ink);stroke-width:.05}
+.board.tn .dot.on{stroke:var(--user);stroke-width:.08;fill:color-mix(in srgb,var(--user) 25%,var(--card))}
+.board.tn .fr{fill:none;stroke:var(--ink);stroke-width:.08}
+
+/* Yajilin y Country Road (usan el estilo de Masyu) */
+.board.yj .ck{fill:var(--btn)}
+.board.yj .ct{font-size:.32px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.board.yj .ct.e{fill:var(--err)}
+.board.yj .bk{fill:var(--shade)} .board.yj .bk.e{fill:#8a2e2a}
+.board.yj .pt{fill:var(--muted)}
+.board.ms .hl{fill:color-mix(in srgb,var(--hint) 45%,transparent)}
+.board.cr .wl{stroke:var(--ink);stroke-width:.07;stroke-linecap:round}
+.board.cr .fr{fill:none;stroke:var(--ink);stroke-width:.08}
+.board.cr .rn{font-size:.26px;font-weight:800;fill:var(--ink);dominant-baseline:central}
+.board.cr .rn.ok{fill:var(--muted)} .board.cr .rn.e{fill:var(--err)}
+
 header.brand{flex-direction:column;align-items:flex-start;gap:0}
 header.brand h1{font-size:2rem;font-weight:900;letter-spacing:-.01em}
 header.brand span{color:var(--muted);font-size:.95rem;letter-spacing:.12em;text-transform:uppercase}
@@ -3112,7 +3201,7 @@ const NUMS=(()=>{
         };
       },
       renderExtra(el,S,api){
-        const k=S.n; if(tool>k) tool=k;
+        const k=cfg.k?cfg.k(S):S.n; if(tool>k) tool=k;
         el.innerHTML='';
         const pad=document.createElement('div'); pad.className='pad su'; pad.style.setProperty('--k',k+2);
         for(const x of [...U.range(k).map(t=>t+1),0]){
@@ -3128,6 +3217,7 @@ const NUMS=(()=>{
         el.appendChild(pad);
       },
       hint(S){
+        if(cfg.hint) return cfg.hint(S);
         const sol=S.puz.sol, N=S.n*S.n;
         const wrong=U.range(N).filter(i=>S.st[i]>0&&S.st[i]!==sol[i]);
         if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla estaba mal'}; }
@@ -3930,6 +4020,1602 @@ const NUMS=(()=>{
   });
 })();
 
+
+/* ================== utilidades comunes (tanda 2) ================== */
+// Rejilla de casillas que se tocan/arrastran para cambiar de estado
+const SHADE={
+  render(board,S,api,flash,o){
+    const n=S.n, N=n*n, reg=o.reg;
+    board.className='board fl shg '+(o.cls||'');
+    board.innerHTML='<div class="gen">Generando…</div>';
+    for(let i=0;i<N;i++){
+      const r=i/n|0,c=i%n, d=document.createElement('div'), x=o.cell(i);
+      d.dataset.i=i;
+      d.className='fc '+(x.c||'')+(flash===i?' h':'')+((c===n-1||(reg&&reg[i]!==reg[i+1]))?' r':'')+((r===n-1||(reg&&reg[i]!==reg[i+n]))?' b':'');
+      d.innerHTML=x.h||'';
+      board.appendChild(d);
+    }
+    const cellAt=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);const c=el&&el.closest&&el.closest('.fc');return c&&board.contains(c)?+c.dataset.i:-1};
+    board.onclick=null;
+    board.onpointerdown=e=>{
+      const S2=api.S; if(!S2||S2.won)return;
+      const i=cellAt(e); if(i<0||o.fixed(i))return;
+      e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+      api.pushUndo();
+      const val=(S2.st[i]+1)%(o.states||3); S2.st[i]=val;
+      board._g={val,last:i}; api.draw();
+    };
+    board.onpointermove=e=>{
+      const g=board._g; if(!g)return; const j=cellAt(e); if(j<0||j===g.last)return;
+      g.last=j; const S2=api.S;
+      if(!o.fixed(j)&&S2.st[j]!==g.val){S2.st[j]=g.val;api.draw();}
+    };
+    board.onpointerup=board.onpointercancel=()=>{ if(!board._g)return; board._g=null; api.commit(); };
+  }
+};
+// Pintar casillas en un SVG (toCell(e) → índice o -1)
+function bindPaint(board,api,toCell,fixed){
+  board.onclick=null;
+  board.onpointerdown=e=>{
+    const S2=api.S; if(!S2||S2.won)return;
+    const i=toCell(e); if(i<0||(fixed&&fixed(i)))return;
+    e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+    api.pushUndo();
+    const val=(S2.st[i]+1)%3; S2.st[i]=val; board._g={val,last:i}; api.draw();
+  };
+  board.onpointermove=e=>{
+    const g=board._g; if(!g)return; const j=toCell(e); if(j<0||j===g.last)return;
+    g.last=j; const S2=api.S;
+    if(!(fixed&&fixed(j))&&S2.st[j]!==g.val){S2.st[j]=g.val;api.draw();}
+  };
+  board.onpointerup=board.onpointercancel=()=>{ if(!board._g)return; board._g=null; api.commit(); };
+}
+// Pista estándar para juegos de sombrear (st: 1 negra, 2 marca blanca; sol: true = negra)
+function shadeHint(S,isBlack,fixed,msgs){
+  const N=S.st.length;
+  const wrong=U.range(N).filter(i=>!fixed(i)&&((S.st[i]===1&&!isBlack(i))||(S.st[i]===2&&isBlack(i))));
+  if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla estaba mal'}; }
+  const open=U.range(N).filter(i=>!fixed(i)&&S.st[i]===0);
+  if(!open.length) return null;
+  const bl=open.filter(isBlack), i=U.pick(bl.length?bl:open);
+  S.st[i]=isBlack(i)?1:2;
+  return {i,msg:isBlack(i)?(msgs?msgs[0]:'Esta va en negro'):(msgs?msgs[1]:'Esta queda blanca')};
+}
+// Partición en rectángulos (Shikaku, Tatamibari, Heyawake)
+const RECT={
+  cellsOf:({r,c,h,w},n)=>{const o=[];for(let y=r;y<r+h;y++)for(let x=c;x<c+w;x++)o.push(y*n+x);return o},
+  partition(n,maxA,wt){
+    const N=n*n, cov=new Int32Array(N).fill(-1), rects=[];
+    for(let i=0;i<N;i++){
+      if(cov[i]>=0)continue;
+      const r=i/n|0,c=i%n, opts=[];
+      let wMax=0; while(c+wMax<n&&cov[r*n+c+wMax]<0)wMax++;
+      for(let w=1;w<=wMax;w++) for(let h=1;r+h<=n;h++){
+        let ok=true; for(let x=0;x<w;x++) if(cov[(r+h-1)*n+c+x]>=0){ok=false;break}
+        if(!ok||w*h>maxA)break;
+        opts.push({r,c,w,h,wt:wt(w,h)});
+      }
+      let x=Math.random()*opts.reduce((s,o)=>s+o.wt,0), o=opts[0];
+      for(const p of opts){x-=p.wt;if(x<=0){o=p;break}}
+      RECT.cellsOf(o,n).forEach(j=>cov[j]=rects.length); rects.push({r:o.r,c:o.c,w:o.w,h:o.h});
+    }
+    return {rects,cov:Array.from(cov)};
+  }
+};
+
+/* ================== NONOGRAMA ================== */
+(()=>{
+  const runs=line=>{const o=[];let k=0;for(const x of line){if(x===1)k++;else if(k){o.push(k);k=0}}if(k)o.push(k);return o};
+  // deduce lo seguro de una línea: -1 desconocida, 0 vacía, 1 llena; null si es imposible
+  function lineSolve(clue,line){
+    const L=line.length, B=clue.length;
+    const F=Array.from({length:B+1},()=>new Uint8Array(L+1));
+    F[B][L]=1; for(let p=L-1;p>=0;p--) F[B][p]=line[p]!==1&&F[B][p+1]?1:0;
+    for(let b=B-1;b>=0;b--){ const len=clue[b];
+      for(let p=L-1;p>=0;p--){
+        let ok=line[p]!==1&&F[b][p+1];
+        if(!ok&&p+len<=L){ let fit=true; for(let q=p;q<p+len;q++) if(line[q]===0){fit=false;break}
+          if(fit&&(p+len===L||line[p+len]!==1)&&F[b+1][p+len===L?L:p+len+1]) ok=1; }
+        F[b][p]=ok?1:0;
+      } }
+    if(!F[0][0]) return null;
+    const R=Array.from({length:B+1},()=>new Uint8Array(L+1)), cf=new Uint8Array(L), ce=new Uint8Array(L);
+    R[0][0]=1;
+    for(let p=0;p<L;p++) for(let b=0;b<=B;b++){
+      if(!R[b][p]||!F[b][p])continue;
+      if(line[p]!==1&&F[b][p+1]){ce[p]=1;R[b][p+1]=1}
+      if(b<B){ const len=clue[b];
+        if(p+len<=L){ let fit=true; for(let q=p;q<p+len;q++) if(line[q]===0){fit=false;break}
+          const nx=p+len===L?L:p+len+1;
+          if(fit&&(p+len===L||line[p+len]!==1)&&F[b+1][nx]){ for(let q=p;q<p+len;q++)cf[q]=1; if(p+len<L)ce[p+len]=1; R[b+1][nx]=1; } } }
+    }
+    return Array.from(line,(x,p)=>cf[p]&&!ce[p]?1:ce[p]&&!cf[p]?0:x);
+  }
+  function logicSolve(rc,cc,n){
+    const g=new Array(n*n).fill(-1); let ch=true;
+    while(ch){ ch=false;
+      for(let r=0;r<n;r++){ const idx=U.range(n).map(c=>r*n+c), nl=lineSolve(rc[r],idx.map(i=>g[i])); if(!nl)return null; nl.forEach((x,k)=>{if(g[idx[k]]!==x){g[idx[k]]=x;ch=true}}); }
+      for(let c=0;c<n;c++){ const idx=U.range(n).map(r=>r*n+c), nl=lineSolve(cc[c],idx.map(i=>g[i])); if(!nl)return null; nl.forEach((x,k)=>{if(g[idx[k]]!==x){g[idx[k]]=x;ch=true}}); }
+    }
+    return g;
+  }
+  const rowsOf=(v,n)=>U.range(n).map(r=>runs(U.range(n).map(c=>v[r*n+c])));
+  const colsOf=(v,n)=>U.range(n).map(c=>runs(U.range(n).map(r=>v[r*n+c])));
+  register({
+    id:'nonograma', name:'Nonograma', jp:true,
+    desc:'Rellena casillas según los números de cada fila y columna y aparecerá un dibujo.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <g font-size="8" font-weight="800" fill="var(--ink)" text-anchor="middle"><text x="30" y="13">1</text><text x="42" y="13">3</text><text x="54" y="13">1</text><text x="13" y="30">1 1</text><text x="13" y="42">3</text><text x="13" y="54">1</text></g>
+      ${[[0,0],[2,0],[0,1],[1,1],[2,1],[1,2]].map(([c,r])=>`<rect x="${24+c*12}" y="${21+r*12}" width="11" height="11" fill="var(--ink)"/>`).join('')}
+      <rect x="24" y="21" width="36" height="36" fill="none" stroke="var(--ink)" stroke-width="1.5"/></svg>`,
+    sizes:[5,8,10,12,15], defaultSize:10,
+    rules:`<ol>
+      <li>Los números de cada fila y columna dicen la longitud de los <b>bloques de casillas rellenas</b> que hay en ella, en orden.</li>
+      <li>Entre dos bloques tiene que haber al menos una casilla vacía.</li>
+      <li>Al terminar aparece un dibujo abstracto (aquí se generan al azar).</li></ol>
+      <ul><li>Toca una casilla: <b>rellena</b> → <b>✕</b> (seguro que está vacía) → vacía. Arrastra para pintar varias igual.</li>
+      <li>Las filas y columnas ya correctas atenúan sus números.</li>
+      <li>Truco: en una fila de 10 con un 7, las 4 casillas centrales van rellenas seguro.</li></ul>`,
+    generate(n){
+      for(;;){
+        const dens=0.52+Math.random()*0.1, v=U.range(n*n).map(()=>Math.random()<dens?1:0);
+        const rc=rowsOf(v,n), cc=colsOf(v,n), g=logicSolve(rc,cc,n);
+        if(g&&g.every(x=>x>=0)) return {rc,cc,sol:v};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),   // 0 vacía, 1 rellena, 2 ✕
+    solved(S){
+      const v=S.st.map(x=>x===1?1:0), n=S.n;
+      return rowsOf(v,n).every((r,k)=>r.join()===S.puz.rc[k].join())&&colsOf(v,n).every((c,k)=>c.join()===S.puz.cc[k].join());
+    },
+    render(board,S,api,flash){
+      const n=S.n, {rc,cc}=S.puz, v=S.st.map(x=>x===1?1:0);
+      const K=Math.max(1,...rc.map(x=>x.length))*.62+.3, L=Math.max(1,...cc.map(x=>x.length))*.62+.3;
+      const rOk=rowsOf(v,n).map((r,k)=>r.join()===rc[k].join()), cOk=colsOf(v,n).map((c,k)=>c.join()===cc[k].join());
+      let h=`<svg viewBox="0 0 ${K+n} ${L+n}">`;
+      for(let r=0;r<n;r++) if(r%2) h+=`<rect class="zb" x="0" y="${L+r}" width="${K}" height="1"/>`;
+      for(let c=0;c<n;c++) if(c%2) h+=`<rect class="zb" x="${K+c}" y="0" width="1" height="${L}"/>`;
+      rc.forEach((cl,r)=>{ const a=cl.length?cl:[0]; a.forEach((x,j)=>h+=`<text class="nc${rOk[r]?' ok':''}" x="${K-(a.length-j)*.62+.15}" y="${L+r+.5}">${x}</text>`); });
+      cc.forEach((cl,c)=>{ const a=cl.length?cl:[0]; a.forEach((x,j)=>h+=`<text class="nc${cOk[c]?' ok':''}" x="${K+c+.5}" y="${L-(a.length-j)*.62+.18}">${x}</text>`); });
+      h+=`<rect class="bg" x="${K}" y="${L}" width="${n}" height="${n}"/>`;
+      S.st.forEach((x,i)=>{ const X=K+i%n, Y=L+(i/n|0);
+        if(x===1) h+=`<rect class="fi${S.errs&&!S.puz.sol[i]?' e':''}${flash===i?' h':''}" x="${X+.04}" y="${Y+.04}" width=".92" height=".92"/>`;
+        else if(x===2) h+=`<path class="xm${S.errs&&S.puz.sol[i]?' e':''}" d="M${X+.3} ${Y+.3}L${X+.7} ${Y+.7}M${X+.7} ${Y+.3}L${X+.3} ${Y+.7}"/>`;
+        else if(flash===i) h+=`<rect class="hl" x="${X}" y="${Y}" width="1" height="1"/>`; });
+      for(let k=1;k<n;k++) h+=`<line class="${k%5?'gl':'gl5'}" x1="${K+k}" y1="${L}" x2="${K+k}" y2="${L+n}"/><line class="${k%5?'gl':'gl5'}" x1="${K}" y1="${L+k}" x2="${K+n}" y2="${L+k}"/>`;
+      h+=`<rect class="fr" x="${K}" y="${L}" width="${n}" height="${n}"/></svg>`;
+      board.className='board ng';
+      board.innerHTML='<div class="gen">Generando…</div>'+h;
+      const toCell=e=>{const r=board.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*(K+n)-K,y=(e.clientY-r.top)/r.height*(L+n)-L;if(x<0||y<0||x>=n||y>=n)return -1;return Math.floor(y)*n+Math.floor(x)};
+      bindPaint(board,api,toCell);
+    },
+    hint(S){ return shadeHint(S,i=>S.puz.sol[i]===1,()=>false,['Esta va rellena','Esta queda vacía']); }
+  });
+})();
+
+/* ================== KAKURASU ================== */
+(()=>{
+  const sums=(v,n)=>({r:U.range(n).map(r=>U.range(n).reduce((a,c)=>a+(v[r*n+c]===1?c+1:0),0)),c:U.range(n).map(c=>U.range(n).reduce((a,r)=>a+(v[r*n+c]===1?r+1:0),0))});
+  function solve(rs,cs,n,limit){
+    const N=n*n, subs=[]; for(let m=0;m<(1<<n);m++){ let s=0; for(let k=0;k<n;k++) if(m>>k&1) s+=k+1; subs.push(s); }
+    const sols=[];
+    const lines=[...U.range(n).map(r=>({idx:U.range(n).map(c=>r*n+c),t:rs[r]})),...U.range(n).map(c=>({idx:U.range(n).map(r=>r*n+c),t:cs[c]}))];
+    function prop(g){
+      let ch=true;
+      while(ch){ ch=false;
+        for(const L of lines){
+          let any=-1, all=(1<<n)-1, cnt=0;  // any: OR de máscaras válidas, all: AND
+          let orM=0, andM=(1<<n)-1;
+          for(let m=0;m<(1<<n);m++){ if(subs[m]!==L.t)continue; let ok=true; for(let k=0;k<n;k++){ const x=g[L.idx[k]]; if(x>=0&&((m>>k&1)!==x)){ok=false;break} } if(ok){cnt++;orM|=m;andM&=m} }
+          if(!cnt) return false;
+          for(let k=0;k<n;k++){ const i=L.idx[k]; if(g[i]>=0)continue; if(andM>>k&1){g[i]=1;ch=true} else if(!(orM>>k&1)){g[i]=0;ch=true} }
+        }
+      }
+      return true;
+    }
+    (function rec(g){
+      if(sols.length>=limit)return;
+      if(!prop(g))return;
+      const i=g.indexOf(-1);
+      if(i<0){sols.push(g.slice());return}
+      for(const x of [1,0]){ const h=g.slice(); h[i]=x; rec(h); if(sols.length>=limit)return; }
+    })(new Array(N).fill(-1));
+    return sols;
+  }
+  register({
+    id:'kakurasu', name:'Kakurasu', jp:true,
+    desc:'Sombrea casillas: cada fila y columna suma los números de posición de sus casillas negras.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <g font-size="8" font-weight="600" fill="var(--muted)" text-anchor="middle"><text x="22" y="12">1</text><text x="34" y="12">2</text><text x="46" y="12">3</text><text x="9" y="25">1</text><text x="9" y="37">2</text><text x="9" y="49">3</text></g>
+      <g font-size="9" font-weight="800" fill="var(--ink)" text-anchor="middle"><text x="60" y="25">4</text><text x="60" y="37">2</text><text x="60" y="49">5</text><text x="22" y="63">4</text><text x="34" y="63">4</text><text x="46" y="63">1</text></g>
+      ${[[0,0],[2,0],[1,1],[1,2],[0,2]].map(([c,r])=>`<rect x="${16+c*12}" y="${16+r*12}" width="12" height="12" fill="var(--ink)"/>`).join('')}
+      <rect x="16" y="16" width="36" height="36" fill="none" stroke="var(--ink)" stroke-width="1.5"/></svg>`,
+    sizes:[4,5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Cada casilla vale su <b>número de columna</b> (arriba) cuando se cuenta para su fila, y su <b>número de fila</b> (izquierda) cuando se cuenta para su columna.</li>
+      <li>Sombrea casillas para que cada fila sume lo que pone a la derecha y cada columna lo que pone abajo.</li></ol>
+      <ul><li>Toca una casilla: <b>negra</b> → <b>✕</b> → vacía. Arrastra para pintar varias igual.</li>
+      <li>Truco: una fila que suma 1 solo puede tener negra la primera casilla.</li></ul>`,
+    generate(n){
+      for(;;){
+        const v=U.range(n*n).map(()=>Math.random()<0.5?1:0), {r,c}=sums(v,n);
+        const s=solve(r,c,n,2);
+        if(s.length===1) return {rs:r,cs:c,sol:v};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){ const {r,c}=sums(S.st,S.n); return r.every((x,k)=>x===S.puz.rs[k])&&c.every((x,k)=>x===S.puz.cs[k]); },
+    render(board,S,api,flash){
+      const n=S.n, {rs,cs,sol}=S.puz, {r:rr,c:cc}=sums(S.st,n);
+      let h=`<svg viewBox="0 0 ${n+2} ${n+2}"><rect class="bg" x="1" y="1" width="${n}" height="${n}"/>`;
+      for(let k=0;k<n;k++){
+        h+=`<text class="ix" x="${k+1.5}" y=".55">${k+1}</text><text class="ix" x=".5" y="${k+1.55}">${k+1}</text>`;
+        const ro=rr[k]===rs[k], co=cc[k]===cs[k];
+        h+=`<text class="sm${ro?' ok':S.errs&&rr[k]>rs[k]?' e':''}" x="${n+1.5}" y="${k+1.55}">${rs[k]}</text><text class="sm${co?' ok':S.errs&&cc[k]>cs[k]?' e':''}" x="${k+1.5}" y="${n+1.55}">${cs[k]}</text>`;
+      }
+      S.st.forEach((x,i)=>{ const X=1+i%n, Y=1+(i/n|0);
+        if(x===1) h+=`<rect class="fi${S.errs&&!sol[i]?' e':''}" x="${X+.04}" y="${Y+.04}" width=".92" height=".92"/>`;
+        else if(x===2) h+=`<path class="xm${S.errs&&sol[i]?' e':''}" d="M${X+.3} ${Y+.3}L${X+.7} ${Y+.7}M${X+.7} ${Y+.3}L${X+.3} ${Y+.7}"/>`;
+        if(flash===i) h+=`<rect class="hl" x="${X}" y="${Y}" width="1" height="1"/>`; });
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k+1}" y1="1" x2="${k+1}" y2="${n+1}"/><line class="gl" x1="1" y1="${k+1}" x2="${n+1}" y2="${k+1}"/>`;
+      h+=`<rect class="fr" x="1" y="1" width="${n}" height="${n}"/></svg>`;
+      board.className='board ng ku';
+      board.innerHTML='<div class="gen">Generando…</div>'+h;
+      const toCell=e=>{const r=board.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*(n+2)-1,y=(e.clientY-r.top)/r.height*(n+2)-1;if(x<0||y<0||x>=n||y>=n)return -1;return Math.floor(y)*n+Math.floor(x)};
+      bindPaint(board,api,toCell);
+    },
+    hint(S){ return shadeHint(S,i=>S.puz.sol[i]===1,()=>false); }
+  });
+})();
+
+/* ================== AKARI ================== */
+(()=>{
+  function views(blk,n){ // casillas blancas visibles desde cada blanca
+    const N=n*n, V=[];
+    for(let i=0;i<N;i++){ const o=[]; if(!blk[i]) for(const [dr,dc] of [[0,1],[1,0],[0,-1],[-1,0]]){ let r=(i/n|0)+dr,c=i%n+dc; while(r>=0&&c>=0&&r<n&&c<n&&!blk[r*n+c]){o.push(r*n+c);r+=dr;c+=dc} } V.push(o); }
+    return V;
+  }
+  function solve(blk,num,n,limit,maxNodes){
+    const N=n*n, V=views(blk,n), gm=U.geometry(n), sols=[]; let nodes=0,aborted=false;
+    const nums=U.range(N).filter(i=>blk[i]&&num[i]>=0);
+    const near=new Uint8Array(N); nums.forEach(i=>gm.nb[i].forEach(j=>near[j]=1));
+    function prop(s){ // s: 0 ?, 1 luz, 2 sin luz (solo blancas)
+      let ch=true;
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++) if(s[i]===1) for(const j of V[i]){ if(s[j]===1)return false; if(!s[j]){s[j]=2;ch=true} }
+        for(const i of nums){ let L=0,u=[]; for(const j of gm.nb[i]) if(!blk[j]){ if(s[j]===1)L++; else if(!s[j])u.push(j); }
+          const t=num[i]; if(L>t||L+u.length<t)return false;
+          if(u.length&&L===t){u.forEach(j=>s[j]=2);ch=true} else if(u.length&&L+u.length===t){u.forEach(j=>s[j]=1);ch=true} }
+        for(let i=0;i<N;i++){ if(blk[i]||s[i]===1)continue;
+          if(V[i].some(j=>s[j]===1))continue;
+          const c=[]; if(!s[i])c.push(i); for(const j of V[i]) if(!s[j])c.push(j);
+          if(!c.length)return false;
+          if(c.length===1){s[c[0]]=1;ch=true} }
+      }
+      return true;
+    }
+    (function rec(s){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(s))return;
+      let i=-1; for(let j=0;j<N;j++) if(!blk[j]&&!s[j]&&near[j]){i=j;break}
+      if(i<0) for(let j=0;j<N;j++) if(!blk[j]&&!s[j]){i=j;break}
+      if(i<0){sols.push(Array.from(s));return}
+      for(const v of [1,2]){ const t=s.slice(); t[i]=v; rec(t); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(N));
+    return {sols,aborted};
+  }
+  function lit(S){
+    const n=S.n, V=views(S.puz.blk,n), L=new Uint8Array(n*n);
+    S.st.forEach((x,i)=>{ if(x===1&&!S.puz.blk[i]){ L[i]=1; V[i].forEach(j=>L[j]=1); } });
+    return {L,V};
+  }
+  register({
+    id:'akari', name:'Akari', jp:true,
+    desc:'Coloca bombillas que iluminan en línea recta hasta iluminar todo, sin que se vean entre ellas.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <rect x="4" y="24" width="60" height="20" fill="#fbe7a1"/><rect x="24" y="4" width="20" height="60" fill="#fbe7a1"/>
+      <circle cx="34" cy="34" r="6" fill="#f2c230" stroke="#8a6a10" stroke-width="1.5"/>
+      <rect x="4" y="4" width="20" height="20" fill="var(--kb)"/><rect x="44" y="44" width="20" height="20" fill="var(--kb)"/>
+      <text x="54" y="58" font-size="12" font-weight="800" text-anchor="middle" fill="var(--kb-ink)">1</text>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/></svg>`,
+    sizes:[6,7,8,10], defaultSize:7,
+    rules:`<ol>
+      <li>Coloca <b>bombillas</b> en casillas blancas. Cada una ilumina su casilla y todas las de su fila y columna hasta chocar con una casilla negra o con el borde.</li>
+      <li>Todas las casillas blancas deben quedar iluminadas.</li>
+      <li>Dos bombillas no pueden iluminarse entre sí.</li>
+      <li>Un número en una casilla negra dice cuántas bombillas hay justo a su lado (arriba, abajo, izquierda y derecha).</li></ol>
+      <ul><li>Toca una casilla: <b>bombilla</b> → <b>punto</b> (aquí no va) → vacía. Arrastra para marcar varias.</li>
+      <li>Truco: un 4 lleva bombillas en sus cuatro lados, y alrededor de un 0 no hay ninguna.</li></ul>`,
+    generate(n){
+      const N=n*n, gm=U.geometry(n);
+      for(;;){
+        const blk=U.range(N).map(()=>Math.random()<0.2);
+        const V=views(blk,n), L=new Uint8Array(N), sol=new Array(N).fill(0);
+        for(const i of U.shuffle(U.range(N))) if(!blk[i]&&!L[i]){ sol[i]=1; L[i]=1; V[i].forEach(j=>L[j]=1); }
+        const num=U.range(N).map(i=>blk[i]?gm.nb[i].filter(j=>sol[j]).length:-1);
+        let r=solve(blk,num,n,2,20000); if(r.aborted||r.sols.length!==1)continue;
+        const t0=performance.now();
+        for(const i of U.shuffle(U.range(N).filter(i=>blk[i]))){
+          if(performance.now()-t0>2500)break;
+          const k=num[i]; num[i]=-1; r=solve(blk,num,n,2,5000);
+          if(r.aborted||r.sols.length!==1) num[i]=k;
+        }
+        return {blk,num,sol};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      const {blk,num}=S.puz, n=S.n, gm=U.geometry(n), {L,V}=lit(S);
+      for(let i=0;i<n*n;i++){ if(blk[i]){ if(num[i]>=0&&gm.nb[i].filter(j=>!blk[j]&&S.st[j]===1).length!==num[i])return false; continue; }
+        if(!L[i])return false; if(S.st[i]===1&&V[i].some(j=>S.st[j]===1))return false; }
+      return true;
+    },
+    render(board,S,api,flash){
+      const {blk,num}=S.puz, gm=U.geometry(S.n), {L,V}=lit(S);
+      SHADE.render(board,S,api,flash,{cls:'ak',fixed:i=>blk[i],cell(i){
+        if(blk[i]){ const k=num[i]; let c='bl';
+          if(k>=0){ const l=gm.nb[i].filter(j=>!blk[j]&&S.st[j]===1).length, f=gm.nb[i].filter(j=>!blk[j]&&S.st[j]!==2).length;
+            if(S.errs&&(l>k||f<k)) c+=' e'; else if(l===k) c+=' ok'; }
+          return {c,h:k>=0?k:''}; }
+        const st=S.st[i]; let c=(L[i]?'lit':'');
+        if(st===1) c+=' lt'+(S.errs&&V[i].some(j=>S.st[j]===1)?' e':'');
+        return {c,h:st===2?'<span class="dt"></span>':''};
+      }});
+    },
+    hint(S){ const {blk,sol}=S.puz; return shadeHint(S,i=>sol[i]===1,i=>blk[i],['Aquí va una bombilla','Aquí no va bombilla']); }
+  });
+})();
+
+/* ================== HEYAWAKE ================== */
+(()=>{
+  const roomsIn=(cells,room)=>{let k=cells.length?1:0;for(let q=1;q<cells.length;q++)if(room[cells[q]]!==room[cells[q-1]])k++;return k};
+  const linesOf=n=>[...U.range(n).map(r=>U.range(n).map(c=>r*n+c)),...U.range(n).map(c=>U.range(n).map(r=>r*n+c))];
+  function violations(isWhite,room,n){
+    const out=[];
+    for(const line of linesOf(n)){ let s=0;
+      for(let k=0;k<=n;k++) if(k===n||!isWhite(line[k])){ const run=line.slice(s,k); if(run.length&&roomsIn(run,room)>=3) out.push(run); s=k+1; } }
+    return out;
+  }
+  function build(n,room){
+    const gm=U.geometry(n), N=n*n, sh=new Uint8Array(N);
+    const can=i=>{ if(sh[i]||gm.nb[i].some(j=>sh[j]))return false; sh[i]=1; const ok=U.connected(j=>sh[j],gm); sh[i]=0; return ok; };
+    for(let it=0;it<N*3;it++){
+      const V=violations(i=>!sh[i],room,n); if(!V.length)break;
+      let done=false;
+      for(const run of U.shuffle(V)){
+        const a=room[run[0]], b=room[run[run.length-1]];
+        const good=run.filter((i,k)=>roomsIn(run.slice(0,k),room)<=2&&roomsIn(run.slice(k+1),room)<=2&&can(i));
+        const mid=good.length?good:run.filter(i=>room[i]!==a&&room[i]!==b&&can(i));
+        const cand=mid.length?mid:run.filter(can);
+        if(cand.length){ sh[U.pick(cand)]=1; done=true; break; }
+      }
+      if(!done) return null;
+    }
+    if(violations(i=>!sh[i],room,n).length) return null;
+    const target=N*(0.17+Math.random()*0.06); let k=sh.reduce((a,x)=>a+x,0);
+    for(const i of U.shuffle(U.range(N))){ if(k>=target)break; if(can(i)){sh[i]=1;k++} }
+    return sh;
+  }
+  function solve(room,num,n,limit,maxNodes){
+    const gm=U.geometry(n), N=n*n, R={}, sols=[]; let nodes=0,aborted=false;
+    room.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+    const L=linesOf(n);
+    function span(st,i,d){ // casillas blancas seguidas que se unirían a i en dirección horizontal (d=1) o vertical (d=n)
+      const r=i/n|0,c=i%n, cells=[i];
+      if(d===1){ for(let x=c-1;x>=0&&st[r*n+x]===1;x--)cells.unshift(r*n+x); for(let x=c+1;x<n&&st[r*n+x]===1;x++)cells.push(r*n+x); }
+      else { for(let y=r-1;y>=0&&st[y*n+c]===1;y--)cells.unshift(y*n+c); for(let y=r+1;y<n&&st[y*n+c]===1;y++)cells.push(y*n+c); }
+      return cells;
+    }
+    function prop(st){
+      let ch=true;
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++) if(st[i]===2) for(const j of gm.nb[i]){ if(st[j]===2)return false; if(!st[j]){st[j]=1;ch=true} }
+        for(const r in R){ const t=num[R[r][0]]; if(t<0)continue; let b=0,u=0; for(const i of R[r]){ if(st[i]===2)b++; else if(!st[i])u++; }
+          if(b>t||b+u<t)return false;
+          if(u&&b===t){R[r].forEach(i=>{if(!st[i])st[i]=1});ch=true} else if(u&&b+u===t){R[r].forEach(i=>{if(!st[i])st[i]=2});ch=true} }
+        for(const line of L){ let s=0; for(let k=0;k<=n;k++) if(k===n||st[line[k]]!==1){ const run=line.slice(s,k); if(run.length>2&&roomsIn(run,room)>=3)return false; s=k+1; } }
+        for(let i=0;i<N;i++) if(!st[i]&&(roomsIn(span(st,i,1),room)>=3||roomsIn(span(st,i,n),room)>=3)){st[i]=2;ch=true}
+        if(!U.connected(j=>st[j]===2,gm))return false;
+        if(ch)continue;
+        // una casilla cuya negra partiría las blancas tiene que ser blanca
+        for(let i=0;i<N;i++) if(!st[i]){ st[i]=2; const ok=U.connected(j=>st[j]===2,gm); st[i]=0; if(!ok){st[i]=1;ch=true} }
+      }
+      return true;
+    }
+    (function rec(st){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(st))return;
+      let i=-1, bu=99;
+      for(const r in R){ if(num[R[r][0]]<0)continue; const u=R[r].filter(j=>!st[j]); if(u.length&&u.length<bu){bu=u.length;i=u[0]} }
+      if(i<0) i=st.indexOf(0);
+      if(i<0){sols.push(Array.from(st));return}
+      for(const v of [2,1]){ const s=st.slice(); s[i]=v; rec(s); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(N));
+    return {sols,aborted};
+  }
+  function check(S){
+    const n=S.n, gm=U.geometry(n), {room,num}=S.puz, st=S.st, bad=new Set(), R={};
+    room.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+    for(let i=0;i<n*n;i++) if(st[i]===1) for(const j of gm.nb[i]) if(st[j]===1){bad.add(i);bad.add(j)}
+    for(const r in R){ const t=num[R[r][0]]; if(t<0)continue; const b=R[r].filter(i=>st[i]===1).length, f=R[r].filter(i=>st[i]!==2).length; if(b>t||f<t) R[r].forEach(i=>bad.add(i)); }
+    for(const run of violations(i=>st[i]===2,room,n)) run.forEach(i=>bad.add(i));
+    return bad;
+  }
+  register({
+    id:'heyawake', name:'Heyawake', jp:true,
+    desc:'Habitaciones con su número de casillas negras, y ninguna línea blanca cruza más de dos habitaciones.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <rect x="24" y="4" width="20" height="20" fill="var(--shade)"/><rect x="4" y="24" width="20" height="20" fill="var(--shade)"/><rect x="44" y="44" width="20" height="20" fill="var(--shade)"/>
+      <path d="M4 44H44V4 M44 24H64" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="10" font-weight="800" fill="var(--ink)"><text x="8" y="15">2</text><text x="48" y="35">1</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    sizes:[6,7,8,9], defaultSize:7,
+    rules:`<ol>
+      <li>Pinta de negro algunas casillas. Un número en una <b>habitación</b> (zona de borde grueso) dice cuántas casillas negras tiene.</li>
+      <li>Dos casillas negras no pueden tocarse por un lado.</li>
+      <li>Todas las casillas blancas deben formar un único bloque conectado.</li>
+      <li>Una línea recta de casillas blancas <b>no puede atravesar más de dos habitaciones</b> (no puede cruzar dos bordes gruesos seguidos).</li></ol>
+      <ul><li>Toca una casilla: <b>negra</b> → <b>punto</b> (blanca segura) → vacía. Arrastra para pintar varias.</li></ul>`,
+    generate(n){
+      for(;;){
+        const room=RECT.partition(n,n>=9?12:9,(w,h)=>{const a=w*h;return a===1?0.03:a===2?0.3:a===3?0.6:Math.max(w,h)>5?0.5:1}).cov;
+        const sh=build(n,room); if(!sh)continue;
+        const num=room.map((r,i)=>room.indexOf(r)===i?room.reduce((a,rr,j)=>a+(rr===r&&sh[j]),0):-1);
+        // el número se guarda en la primera casilla de cada habitación
+        const full=U.range(n*n).map(i=>{const f=room.indexOf(room[i]);return num[f]}), first=U.range(n*n).map(i=>room.indexOf(room[i])===i);
+        const numAt=full.map((x,i)=>first[i]?x:-1), cl=U.range(n*n).map(i=>full[i]);
+        let r=solve(room,cl,n,2,20000); if(r.aborted||r.sols.length!==1)continue;
+        const t0=performance.now();
+        for(const i of U.shuffle(U.range(n*n).filter(i=>first[i]))){
+          if(performance.now()-t0>2500)break;
+          const keep=cl.slice(); room.forEach((rr,j)=>{if(rr===room[i])cl[j]=-1});
+          r=solve(room,cl,n,2,5000);
+          if(r.aborted||r.sols.length!==1) keep.forEach((x,j)=>cl[j]=x);
+        }
+        return {room,num:cl,sol:Array.from(sh)};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      const n=S.n, gm=U.geometry(n), bl=i=>S.st[i]===1;
+      for(let i=0;i<n*n;i++) if(bl(i)&&gm.nb[i].some(bl))return false;
+      if(!U.connected(bl,gm))return false;
+      const {room,num}=S.puz, R={}; room.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+      for(const r in R){ const t=num[R[r][0]]; if(t>=0&&R[r].filter(bl).length!==t)return false; }
+      return violations(i=>!bl(i),room,n).length===0;
+    },
+    render(board,S,api,flash){
+      const {room,num}=S.puz, bad=S.errs?check(S):new Set();
+      SHADE.render(board,S,api,flash,{reg:room,cls:'hw',fixed:()=>false,cell(i){
+        const st=S.st[i], lab=room.indexOf(room[i])===i&&num[i]>=0?`<span class="rn">${num[i]}</span>`:'';
+        return {c:'v'+st+(bad.has(i)?' e':''),h:lab+(st===2?'<span class="dt"></span>':'')};
+      }});
+    },
+    hint(S){ return shadeHint(S,i=>!!S.puz.sol[i],()=>false); }
+  });
+})();
+
+/* ================== NORINORI ================== */
+(()=>{
+  function build(n){
+    const gm=U.geometry(n), N=n*n, bl=new Uint8Array(N), D=Math.round(N/(4.2+Math.random()*0.8));
+    let d=0;
+    for(const i of U.shuffle(U.range(N))){
+      if(d>=D)break; if(bl[i])continue;
+      const j=U.pick(gm.nb[i]); if(bl[j])continue;
+      if(gm.nb[i].some(k=>k!==j&&bl[k])||gm.nb[j].some(k=>k!==i&&bl[k]))continue;
+      bl[i]=bl[j]=1; d++;
+    }
+    // medias regiones: una por casilla negra, que crecen por las blancas
+    const half=new Int32Array(N).fill(-1), seeds=U.range(N).filter(i=>bl[i]);
+    seeds.forEach((i,k)=>half[i]=k);
+    let left=N-seeds.length;
+    while(left){
+      const f=[]; for(let i=0;i<N;i++) if(half[i]<0&&gm.nb[i].some(j=>half[j]>=0)) f.push(i);
+      if(!f.length) return null;
+      const i=U.pick(f); half[i]=half[U.pick(gm.nb[i].filter(j=>half[j]>=0))]; left--;
+    }
+    const H=seeds.length, adj=Array.from({length:H},()=>new Set());
+    for(let i=0;i<N;i++) for(const j of gm.nb[i]) if(half[i]!==half[j]) adj[half[i]].add(half[j]);
+    const mate=k=>{ const i=seeds[k]; return half[gm.nb[i].find(j=>bl[j])]; };
+    // emparejar medias regiones vecinas (preferiblemente de parejas negras distintas)
+    const out=[];
+    for(let t=0;t<200&&out.length<25;t++){
+      const pair=new Int32Array(H).fill(-1); let ok=true;
+      const order=U.shuffle(U.range(H)).sort((a,b)=>adj[a].size-adj[b].size);
+      for(const k of order){ if(pair[k]>=0)continue;
+        const opts=[...adj[k]].filter(x=>pair[x]<0);
+        if(!opts.length){ok=false;break}
+        const other=opts.filter(x=>x!==mate(k)), x=other.length&&Math.random()<0.8?U.pick(other):U.pick(opts);
+        pair[k]=x; pair[x]=k; }
+      if(!ok)continue;
+      const reg=Array.from(half,h=>Math.min(h,pair[h]));
+      if(!out.some(o=>o.reg.join()===reg.join())) out.push({bl:Array.from(bl),reg});
+    }
+    return out;
+  }
+  function solve(reg,n,limit,maxNodes){
+    const gm=U.geometry(n), N=n*n, R={}, sols=[]; let nodes=0,aborted=false;
+    reg.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+    function prop(st){ // 1 blanca, 2 negra
+      let ch=true;
+      while(ch){ ch=false;
+        for(const r in R){ let b=0,u=0; for(const i of R[r]){ if(st[i]===2)b++; else if(!st[i])u++; }
+          if(b>2||b+u<2)return false;
+          if(u&&b===2){R[r].forEach(i=>{if(!st[i])st[i]=1});ch=true} else if(u&&b+u===2){R[r].forEach(i=>{if(!st[i])st[i]=2});ch=true} }
+        for(let i=0;i<N;i++){ if(st[i]!==2)continue; let k=0; const u=[]; for(const j of gm.nb[i]){ if(st[j]===2)k++; else if(!st[j])u.push(j); }
+          if(k>1)return false;
+          if(k===1&&u.length){u.forEach(j=>st[j]=1);ch=true}
+          if(k===0){ if(!u.length)return false; if(u.length===1){st[u[0]]=2;ch=true} } }
+      }
+      return true;
+    }
+    (function rec(st){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(st))return;
+      const i=st.indexOf(0);
+      if(i<0){sols.push(Array.from(st));return}
+      for(const v of [2,1]){ const s=st.slice(); s[i]=v; rec(s); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(N));
+    return {sols,aborted};
+  }
+  function check(S){
+    const n=S.n, gm=U.geometry(n), st=S.st, bad=new Set(), R={};
+    S.puz.reg.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+    for(let i=0;i<n*n;i++) if(st[i]===1){ const k=gm.nb[i].filter(j=>st[j]===1).length, f=gm.nb[i].filter(j=>st[j]!==2).length; if(k>1||f===0) bad.add(i); }
+    for(const r in R){ const b=R[r].filter(i=>st[i]===1).length, f=R[r].filter(i=>st[i]!==2).length; if(b>2||f<2) R[r].forEach(i=>bad.add(i)); }
+    return bad;
+  }
+  register({
+    id:'norinori', name:'Norinori', jp:true,
+    desc:'Cada región lleva dos casillas negras, y las negras van siempre de dos en dos, como fichas de dominó.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <rect x="4" y="4" width="40" height="20" fill="var(--shade)"/><rect x="44" y="24" width="20" height="40" fill="var(--shade)"/><rect x="4" y="44" width="20" height="20" fill="var(--shade)"/><rect x="24" y="44" width="20" height="20" fill="var(--shade)"/>
+      <path d="M4 24H44V4 M44 24V64 M4 44H44" fill="none" stroke="var(--ring)" stroke-width="2.5"/>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    sizes:[5,6,7], defaultSize:6,
+    rules:`<ol>
+      <li>Cada región (zona de borde grueso) tiene exactamente <b>dos casillas negras</b>.</li>
+      <li>Cada casilla negra toca por un lado a <b>exactamente otra</b> casilla negra: las negras forman parejas tipo dominó que no se tocan entre sí. Una pareja puede repartirse entre dos regiones.</li></ol>
+      <ul><li>Toca una casilla: <b>negra</b> → <b>punto</b> (blanca segura) → vacía. Arrastra para pintar varias.</li>
+      <li>Truco: en una región de dos casillas, las dos son negras.</li></ul>`,
+    generate(n){
+      for(;;){
+        const L=build(n); if(!L)continue;
+        for(const b of L){
+          const r=solve(b.reg,n,2,8000);
+          if(!r.aborted&&r.sols.length===1) return {reg:b.reg,sol:b.bl};
+        }
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      const n=S.n, gm=U.geometry(n), bl=i=>S.st[i]===1, R={};
+      S.puz.reg.forEach((r,i)=>(R[r]=R[r]||[]).push(i));
+      for(let i=0;i<n*n;i++) if(bl(i)&&gm.nb[i].filter(bl).length!==1)return false;
+      return Object.values(R).every(c=>c.filter(bl).length===2);
+    },
+    render(board,S,api,flash){
+      const bad=S.errs?check(S):new Set();
+      SHADE.render(board,S,api,flash,{reg:S.puz.reg,cls:'nr',fixed:()=>false,cell(i){ const st=S.st[i]; return {c:'v'+st+(bad.has(i)?' e':''),h:st===2?'<span class="dt"></span>':''}; }});
+    },
+    hint(S){ return shadeHint(S,i=>!!S.puz.sol[i],()=>false); }
+  });
+})();
+
+/* ================== YIN-YANG ================== */
+(()=>{
+  // colores: 1 negro, 2 blanco
+  function compsOK(col,n,c,allowUnk){ // ¿las casillas de color c están conectadas (pasando por desconocidas si allowUnk)?
+    const N=n*n, gm=U.geometry(n); let s=-1; for(let i=0;i<N;i++) if(col[i]===c){s=i;break}
+    if(s<0) return true;
+    const seen=new Uint8Array(N), q=[s]; seen[s]=1;
+    while(q.length){ const a=q.pop(); for(const b of gm.nb[a]) if(!seen[b]&&(col[b]===c||(allowUnk&&!col[b]))){seen[b]=1;q.push(b)} }
+    for(let i=0;i<N;i++) if(col[i]===c&&!seen[i])return false;
+    return true;
+  }
+  const blocks=n=>{const o=[];for(let r=0;r<n-1;r++)for(let c=0;c<n-1;c++){const i=r*n+c;o.push([i,i+1,i+n+1,i+n])}return o}; // en orden circular
+  const badBlock=(a,b,c,d)=>(a===b&&b===c&&c===d)||(a===c&&b===d&&a!==b);
+  function build(n){
+    const N=n*n, gm=U.geometry(n), col=new Int8Array(N).fill(2), B=blocks(n);
+    col[Math.random()*N|0]=1;
+    for(let it=0;it<N*4;it++){
+      const white4=B.filter(b=>b.every(i=>col[i]===2));
+      const hot=new Set(); white4.forEach(b=>b.forEach(i=>hot.add(i)));
+      const cand=[];
+      for(let i=0;i<N;i++){ if(col[i]!==2||!gm.nb[i].some(j=>col[j]===1))continue;
+        col[i]=1;
+        const ok=B.every(b=>!b.includes(i)||!badBlock(...b.map(j=>col[j])))&&compsOK(col,n,2,false);
+        col[i]=2; if(ok) cand.push(i); }
+      if(!cand.length) break;
+      const hc=cand.filter(i=>hot.has(i));
+      if(!white4.length&&Math.random()<0.6) break;
+      col[U.pick(hc.length?hc:cand)]=1;
+    }
+    if(B.some(b=>badBlock(...b.map(j=>col[j]))))return null;
+    if(!compsOK(col,n,1,false)||!compsOK(col,n,2,false))return null;
+    return col;
+  }
+  function solve(given,n,limit,maxNodes){
+    const N=n*n, gm=U.geometry(n), B=blocks(n), sols=[]; let nodes=0,aborted=false;
+    function prop(s){
+      let ch=true;
+      while(ch){ ch=false;
+        for(const b of B){ const v=b.map(i=>s[i]), u=v.filter(x=>!x).length;
+          if(!u){ if(badBlock(...v))return false; continue; }
+          if(u!==1)continue;
+          const k=v.indexOf(0), okv=[1,2].filter(x=>{const w=v.slice();w[k]=x;return !badBlock(...w)});
+          if(!okv.length)return false;
+          if(okv.length===1){s[b[k]]=okv[0];ch=true} }
+        if(!compsOK(s,n,1,true)||!compsOK(s,n,2,true))return false;
+      }
+      return true;
+    }
+    (function rec(s){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(s))return;
+      let i=-1; for(let j=0;j<N;j++) if(!s[j]&&gm.nb[j].some(k=>s[k])){i=j;break}
+      if(i<0) i=s.indexOf(0);
+      if(i<0){ if(compsOK(s,n,1,false)&&compsOK(s,n,2,false)) sols.push(Array.from(s)); return; }
+      for(const v of [1,2]){ const t=s.slice(); t[i]=v; rec(t); if(sols.length>=limit||aborted)return; }
+    })(Int8Array.from(given));
+    return {sols,aborted};
+  }
+  register({
+    id:'yinyang', name:'Yin-Yang', jp:true,
+    desc:'Llena todo de fichas blancas y negras: cada color forma un solo grupo y no hay cuadrados de 2×2 iguales.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      ${[[1,1,1],[2,2,1],[1,2,2]].map((row,r)=>row.map((x,c)=>`<circle cx="${14+c*20}" cy="${14+r*20}" r="7.5" fill="${x===1?'var(--ink)':'var(--card)'}" stroke="var(--ink)" stroke-width="2"/>`).join('')).join('')}</svg>`,
+    sizes:[6,7,8,9,10], defaultSize:7,
+    rules:`<ol>
+      <li>Pon una ficha <b>negra</b> o <b>blanca</b> en cada casilla.</li>
+      <li>Todas las negras deben estar conectadas entre sí por los lados, y lo mismo las blancas.</li>
+      <li>No puede haber ningún cuadrado de <b>2×2</b> del mismo color.</li></ol>
+      <ul><li>Toca una casilla: <b>negra</b> → <b>blanca</b> → vacía. Arrastra para poner varias iguales.</li>
+      <li>Las fichas con fondo sombreado vienen dadas.</li>
+      <li>Truco: en un 2×2 no puede quedar un «tablero de ajedrez» (negras y blancas en diagonal), porque cortaría uno de los dos grupos.</li></ul>`,
+    generate(n){
+      for(;;){
+        const col=build(n); if(!col)continue;
+        const g=Array.from(col), t0=performance.now();
+        for(const i of U.shuffle(U.range(n*n))){
+          if(performance.now()-t0>3000)break;
+          const k=g[i]; g[i]=0; const r=solve(g,n,2,4000);
+          if(r.aborted||r.sols.length!==1) g[i]=k;
+        }
+        const r=solve(g,n,2,30000); if(r.aborted||r.sols.length!==1)continue;
+        return {clue:g,sol:Array.from(col)};
+      }
+    },
+    init:(puz)=>puz.clue.slice(),
+    solved(S){
+      const n=S.n; if(S.st.some(x=>!x))return false;
+      if(blocks(n).some(b=>badBlock(...b.map(j=>S.st[j]))))return false;
+      return compsOK(S.st,n,1,false)&&compsOK(S.st,n,2,false);
+    },
+    render(board,S,api,flash){
+      const n=S.n, bad=new Set();
+      if(S.errs) for(const b of blocks(n)){ const v=b.map(j=>S.st[j]); if(v.every(x=>x)&&badBlock(...v)) b.forEach(j=>bad.add(j)); }
+      SHADE.render(board,S,api,flash,{cls:'yy',fixed:i=>!!S.puz.clue[i],cell(i){ return {c:'v'+S.st[i]+(S.puz.clue[i]?' k':'')+(bad.has(i)?' e':'')}; }});
+    },
+    hint(S){
+      const {sol,clue}=S.puz, N=S.n*S.n;
+      const wrong=U.range(N).filter(i=>S.st[i]&&S.st[i]!==sol[i]);
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta ficha estaba mal'}; }
+      const open=U.range(N).filter(i=>!S.st[i]);
+      if(!open.length) return null;
+      const i=U.pick(open); S.st[i]=sol[i];
+      return {i,msg:'Aquí va una ficha '+(sol[i]===1?'negra':'blanca')};
+    }
+  });
+})();
+
+/* ================== SUKORO ================== */
+(()=>{
+  // s: 0 ?, 1 con número, 2 vacía
+  function solve(g,n,limit,maxNodes,random){
+    const N=n*n, gm=U.geometry(n), sols=[]; let nodes=0,aborted=false;
+    const bounds=(s,i)=>{let lo=0,hi=0;for(const j of gm.nb[i]){if(s[j]===1){lo++;hi++}else if(!s[j])hi++}return [lo,hi]};
+    function conn(s,strict){
+      let st=-1; for(let i=0;i<N;i++) if(s[i]===1){st=i;break}
+      if(st<0) return true;
+      const seen=new Uint8Array(N),q=[st]; seen[st]=1;
+      while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(!seen[b]&&(s[b]===1||(!strict&&!s[b]))){seen[b]=1;q.push(b)}}
+      for(let i=0;i<N;i++) if(s[i]===1&&!seen[i])return false;
+      return true;
+    }
+    function prop(s){
+      let ch=true;
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++){ if(s[i]!==1)continue; const [lo,hi]=bounds(s,i);
+          if(hi<1)return false;
+          const t=g[i]>0?g[i]:0;
+          if(t){ if(lo>t||hi<t)return false;
+            if(hi>lo&&lo===t){gm.nb[i].forEach(j=>{if(!s[j])s[j]=2});ch=true}
+            else if(hi>lo&&hi===t){gm.nb[i].forEach(j=>{if(!s[j])s[j]=1});ch=true} }
+          else if(lo===0&&hi===1){gm.nb[i].forEach(j=>{if(!s[j])s[j]=1});ch=true}
+          if(lo===hi) for(const j of gm.nb[i]) if(s[j]===1){ const [l2,h2]=bounds(s,j); if(l2===h2&&l2===lo)return false; } }
+        if(!conn(s,false))return false;
+      }
+      return true;
+    }
+    (function rec(s){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(s))return;
+      let i=-1; for(let j=0;j<N;j++) if(!s[j]&&gm.nb[j].some(k=>s[k]===1)){i=j;break}
+      if(i<0) i=s.indexOf(0);
+      if(i<0){ if(conn(s,true)&&s.some(x=>x===1)) sols.push(U.range(N).map(j=>s[j]===1?bounds(s,j)[0]:0)); return; }
+      const order=random?(Math.random()<0.6?[1,2]:[2,1]):[1,2];
+      for(const v of order){ const t=s.slice(); t[i]=v; rec(t); if(sols.length>=limit||aborted)return; }
+    })(Int8Array.from(g,x=>x>0?1:x<0?2:0));
+    return {sols,aborted};
+  }
+  function check(S){
+    const n=S.n, gm=U.geometry(n), v=S.st, bad=new Set();
+    for(let i=0;i<n*n;i++){ if(!(v[i]>0))continue; const k=gm.nb[i].filter(j=>v[j]>0).length;
+      if(k>v[i]) bad.add(i);
+      for(const j of gm.nb[i]) if(v[j]===v[i]){bad.add(i);bad.add(j)} }
+    return bad;
+  }
+  const ui=NUMS.ui({k:()=>4, borders:()=>[], bad:check, peers:S=>U.geometry(S.n).nb,
+    hint(S){
+      const {sol}=S.puz, N=S.n*S.n;
+      const wrong=U.range(N).filter(i=>S.st[i]>0&&S.st[i]!==sol[i]);
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:sol[i]?'Este número estaba mal':'Esta casilla va vacía'}; }
+      const open=U.range(N).filter(i=>sol[i]&&S.st[i]!==sol[i]);
+      if(!open.length) return null;
+      const i=U.pick(open); S.st[i]=sol[i];
+      return {i,msg:'Aquí va un '+sol[i]};
+    }});
+  register({
+    id:'sukoro', name:'Sukoro', jp:true,
+    desc:'Cada número dice cuántas casillas vecinas tienen número; los números forman un solo grupo.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <g font-size="13" font-weight="700" text-anchor="middle" fill="var(--ink)">${[[1,0,0],[3,2,1],[1,0,0]].map((row,r)=>row.map((x,c)=>x?`<text x="${14+c*20}" y="${19+r*20}">${x}</text>`:'').join('')).join('')}</g>
+      <path d="M4 24H64M4 44H64M24 4V64M44 4V64" stroke="var(--line)" stroke-width="1.5"/>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/></svg>`,
+    sizes:[5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Escribe números del 1 al 4 en algunas casillas; el resto se queda vacío.</li>
+      <li>Cada número dice cuántas de sus casillas vecinas (arriba, abajo, izquierda y derecha) tienen número.</li>
+      <li>Dos números iguales no pueden tocarse por un lado.</li>
+      <li>Todas las casillas con número deben formar un único grupo conectado.</li></ol>
+      <ul><li>Elige un número abajo y toca una casilla. Tocarla con el mismo número la borra; ⌫ es la goma.</li>
+      <li>✎ activa las notas, útiles para apuntar dudas.</li></ul>`,
+    generate(n){
+      const N=n*n;
+      for(;;){
+        const r0=solve(new Array(N).fill(0).map((_,i)=>i===(Math.random()*N|0)?0:0),n,1,4000,true);
+        if(!r0.sols.length)continue;
+        const sol=r0.sols[0], cnt=sol.filter(x=>x).length;
+        if(cnt<N*0.4||cnt>N*0.7)continue;
+        const clue=sol.slice(), t0=performance.now();
+        for(const i of U.shuffle(U.range(N).filter(i=>sol[i]))){
+          if(performance.now()-t0>2500)break;
+          const k=clue[i]; clue[i]=0; const r=solve(clue,n,2,5000,false);
+          if(r.aborted||r.sols.length!==1) clue[i]=k;
+        }
+        return {clue,sol};
+      }
+    },
+    init:(puz)=>puz.clue.slice(),
+    solved(S){
+      const n=S.n, gm=U.geometry(n), v=S.st.map(x=>x>0?x:0);
+      if(check({n,st:v}).size)return false;
+      for(let i=0;i<n*n;i++) if(v[i]&&gm.nb[i].filter(j=>v[j]).length!==v[i])return false;
+      return v.some(x=>x)&&U.connected(i=>!v[i],gm)||false;
+    },
+    render:ui.render, renderExtra:ui.renderExtra, hint:ui.hint
+  });
+})();
+
+/* ================== RIPPLE EFFECT ================== */
+(()=>{
+  const W=[0,10,20,26,24,20];
+  function pickSize(){let r=Math.random()*100;for(let k=1;k<W.length;k++){r-=W[k];if(r<=0)return k}return 3}
+  function partition(n){
+    const gm=U.geometry(n), N=n*n, reg=new Int32Array(N).fill(-1); let id=0,left=N;
+    const free=i=>gm.nb[i].reduce((a,j)=>a+(reg[j]<0),0);
+    while(left){
+      let best=[],bf=9; for(let i=0;i<N;i++) if(reg[i]<0){const f=free(i);if(f<bf){bf=f;best=[i]}else if(f===bf)best.push(i)}
+      const s=U.pick(best), cells=[s], t=pickSize(); reg[s]=id;
+      while(cells.length<t){ const f=[]; for(const c of cells) for(const j of gm.nb[c]) if(reg[j]<0&&!f.includes(j)) f.push(j); if(!f.length)break; const j=U.pick(f); reg[j]=id; cells.push(j); }
+      left-=cells.length; id++;
+    }
+    return Array.from(reg);
+  }
+  function model(reg,n){ const R={}; reg.forEach((r,i)=>(R[r]=R[r]||[]).push(i)); return {R,size:reg.map(r=>R[r].length)}; }
+  function search(reg,n,given,limit,maxNodes,random){
+    const N=n*n, {R,size}=model(reg,n), v=Array.from(given,x=>x>0?x:0), sols=[]; let nodes=0,aborted=false;
+    const cand=i=>{
+      let m=0; for(let x=1;x<=size[i];x++) m|=1<<x;
+      for(const j of R[reg[i]]) if(j!==i&&v[j]) m&=~(1<<v[j]);
+      const r=i/n|0,c=i%n;
+      for(let x=1;x<=5;x++){ if(!(m>>x&1))continue;
+        for(let d=1;d<=x;d++){ const cs=[[r,c-d],[r,c+d],[r-d,c],[r+d,c]];
+          if(cs.some(([y,z])=>y>=0&&z>=0&&y<n&&z<n&&v[y*n+z]===x)){m&=~(1<<x);break} } }
+      return m;
+    };
+    for(let i=0;i<N;i++) if(v[i]){const x=v[i];v[i]=0;const ok=cand(i)>>x&1;v[i]=x;if(!ok)return {sols,aborted}}
+    (function rec(){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      let best=-1,bm=0,bc=99;
+      for(let i=0;i<N;i++) if(!v[i]){const m=cand(i);if(!m)return;const c=NUMS.bits(m);if(c<bc){bc=c;bm=m;best=i;if(c===1)break}}
+      if(best<0){sols.push(v.slice());return}
+      const xs=[];for(let x=1;x<=5;x++)if(bm>>x&1)xs.push(x);
+      if(random)U.shuffle(xs);
+      for(const x of xs){v[best]=x;rec();v[best]=0;if(sols.length>=limit||aborted)return}
+    })();
+    return {sols,aborted};
+  }
+  function check(S){
+    const n=S.n, v=S.st, {R,size}=model(S.puz.reg,n), bad=new Set();
+    for(let i=0;i<n*n;i++){ const x=v[i]; if(!(x>0))continue; const r=i/n|0,c=i%n;
+      if(x>size[i]) bad.add(i);
+      for(const j of R[S.puz.reg[i]]) if(j!==i&&v[j]===x){bad.add(i);bad.add(j)}
+      for(let d=1;d<=x;d++) for(const [y,z] of [[r,c+d],[r+d,c]]) if(y<n&&z<n&&v[y*n+z]===x){bad.add(i);bad.add(y*n+z)} }
+    return bad;
+  }
+  const peerCache={};
+  const ui=NUMS.ui({k:S=>Math.max(...model(S.puz.reg,S.n).size), borders:S=>S.puz.reg, bad:check,
+    peers:S=>{ const key=S.puz.reg.join(); if(peerCache[key])return peerCache[key]; const n=S.n,{R}=model(S.puz.reg,n);
+      return peerCache[key]=U.range(n*n).map(i=>{ const r=i/n|0,c=i%n, s=new Set(R[S.puz.reg[i]]);
+        for(let d=1;d<=5;d++) for(const [y,z] of [[r,c-d],[r,c+d],[r-d,c],[r+d,c]]) if(y>=0&&z>=0&&y<n&&z<n) s.add(y*n+z);
+        s.delete(i); return [...s]; }); }});
+  register({
+    id:'ripple', name:'Ripple Effect', jp:true,
+    desc:'Regiones del 1 al N; dos números iguales en línea quedan separados al menos por ese número de casillas.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <g font-size="12" font-weight="700" text-anchor="middle" fill="var(--ink)">${[[2,1,3],[1,3,2],[3,2,1]].map((row,r)=>row.map((x,c)=>`<text x="${14+c*20}" y="${19+r*20}">${x}</text>`).join('')).join('')}</g>
+      <path d="M4 4h60v60H4z M24 4v20 M4 24h40 M44 24v40 M24 44h20 M24 44v20" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+    sizes:[5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Una región (borde grueso) de N casillas lleva los números del 1 al N, sin repetir.</li>
+      <li>Si dos números iguales están en la misma fila o columna, entre ellos debe haber <b>al menos tantas casillas como ese número</b>: entre dos 3 caben como mínimo 3 casillas.</li></ol>
+      <ul><li>Elige un número abajo y toca una casilla. Tocarla con el mismo número la borra; ⌫ es la goma.</li>
+      <li>✎ activa las notas. Al colocar un número se borran solas esas notas en su región y en su «onda».</li></ul>`,
+    generate(n){
+      for(;;){
+        const reg=partition(n), r=search(reg,n,new Array(n*n).fill(0),1,20000,true);
+        if(!r.sols.length)continue;
+        const sol=r.sols[0], clue=sol.slice(), t0=performance.now();
+        for(const i of U.shuffle(U.range(n*n))){
+          if(performance.now()-t0>3000)break;
+          const k=clue[i]; clue[i]=0; const q=search(reg,n,clue,2,5000,false);
+          if(q.aborted||q.sols.length!==1) clue[i]=k;
+        }
+        return {reg,clue,sol};
+      }
+    },
+    init:(puz)=>puz.clue.slice(),
+    solved(S){ return S.st.every(x=>x>0)&&check(S).size===0; },
+    render:ui.render, renderExtra:ui.renderExtra, hint:ui.hint
+  });
+})();
+
+/* ================== SHAKASHAKA ================== */
+(()=>{
+  // casilla: 0 blanca, 1-4 triángulo con el ángulo recto (negro) en ↖ ↗ ↘ ↙, 5 negra
+  const VSH={0:3,3:0,1:2,2:1};
+  function corner(v,k){ // ¿negro el sector junto al lado vertical / horizontal de la esquina k?
+    if(v===0)return [0,0]; if(v===5)return [1,1];
+    const K=v-1; if(k===K)return [1,1]; if(k===(K+2)%4)return [0,0];
+    return VSH[K]===k?[1,0]:[0,1];
+  }
+  function vertexOK(get,r,c){
+    const NE=corner(get(r-1,c),3), SE=corner(get(r,c),0), SW=corner(get(r,c-1),1), NW=corner(get(r-1,c-1),2);
+    const s=[NE[0],NE[1],SE[1],SE[0],SW[0],SW[1],NW[1],NW[0]];
+    const b=s.indexOf(1); if(b<0)return true;
+    let run=0;
+    for(let k=1;k<=8;k++){ const x=s[(b+k)%8]; if(!x)run++; else { if(run&&run!==2&&run!==4)return false; run=0; } }
+    return true;
+  }
+  const isTri=x=>x>=1&&x<=4;
+  function solve(blk,num,n,limit,maxNodes,gen){
+    const N=n*n, gm=U.geometry(n), v=new Int8Array(N).fill(-1), sols=[]; let nodes=0,aborted=false;
+    const get=(r,c)=>r<0||c<0||r>=n||c>=n?5:v[r*n+c];
+    const numOK=j=>{ if(!blk||!blk[j]||num[j]<0)return true; let t=0,u=0; for(const k of gm.nb[j]){ if(v[k]<0)u++; else if(isTri(v[k]))t++; } return t<=num[j]&&t+u>=num[j]; };
+    function ok(i){
+      const r=i/n|0,c=i%n;
+      if(!vertexOK(get,r,c))return false;
+      if(c===n-1&&!vertexOK(get,r,c+1))return false;
+      if(r===n-1){ if(!vertexOK(get,r+1,c))return false; if(c===n-1&&!vertexOK(get,r+1,c+1))return false; }
+      for(const j of gm.nb[i]) if(!numOK(j))return false;
+      return true;
+    }
+    const W=[4,0.9,0.9,0.9,0.9,1.7];
+    function order(){ const o=[]; const w=W.slice(); for(let t=0;t<6;t++){ let x=Math.random()*w.reduce((a,b)=>a+b,0), k=0; while((x-=w[k])>0)k++; o.push(k); w[k]=0; } return o; }
+    (function rec(i){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(i===N){sols.push(Array.from(v));return}
+      const vals=gen?order():blk[i]?[5]:[0,1,2,3,4];
+      for(const x of vals){ v[i]=x; if(ok(i)) rec(i+1); v[i]=-1; if(sols.length>=limit||aborted)return; }
+    })(0);
+    return {sols,aborted};
+  }
+  register({
+    id:'shakashaka', name:'Shakashaka', jp:true,
+    desc:'Pon triángulos negros para que todos los huecos blancos queden en forma de rectángulo.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <rect x="4" y="4" width="20" height="20" fill="var(--ink)"/><text x="14" y="18.5" font-size="12" font-weight="800" text-anchor="middle" fill="var(--card)">2</text>
+      <path d="M24 4H44L24 24Z M4 24H24V44Z M44 64H24L44 44Z M64 44V64H44Z M44 4H64V24Z" fill="var(--ink)"/>
+      <path d="M44 4V64M4 24H64M4 44H64M24 4V64" stroke="var(--line)" stroke-width="1"/>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/></svg>`,
+    sizes:[5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Coloca <b>triángulos negros</b> (media casilla cortada en diagonal) en algunas casillas blancas.</li>
+      <li>Al terminar, cada zona blanca debe ser un <b>rectángulo</b>: recto o girado 45°.</li>
+      <li>Un número en una casilla negra dice cuántos triángulos hay justo a su lado (arriba, abajo, izquierda y derecha).</li></ol>
+      <ul><li>Toca una casilla cerca de una esquina para poner el triángulo con el ángulo recto en esa esquina. Tocar igual lo quita.</li>
+      <li>Toca el centro de una casilla para marcarla con un punto (seguro que queda blanca).</li>
+      <li>Con «Marcar errores» se señalan en rojo las esquinas que no pueden ser de un rectángulo.</li></ul>`,
+    generate(n){
+      const N=n*n, gm=U.geometry(n);
+      for(;;){
+        const r0=solve(null,null,n,1,20000,true); if(!r0.sols.length)continue;
+        const sol=r0.sols[0], nb=sol.filter(x=>x===5).length, nt=sol.filter(isTri).length;
+        if(nb<N*0.1||nb>N*0.3||nt<N*0.18)continue;
+        const blk=sol.map(x=>x===5), num=U.range(N).map(i=>blk[i]?gm.nb[i].filter(j=>isTri(sol[j])).length:-1);
+        let r=solve(blk,num,n,2,30000,false); if(r.aborted||r.sols.length!==1)continue;
+        const t0=performance.now();
+        for(const i of U.shuffle(U.range(N).filter(i=>blk[i]))){
+          if(performance.now()-t0>2500)break;
+          const k=num[i]; num[i]=-1; r=solve(blk,num,n,2,15000,false);
+          if(r.aborted||r.sols.length!==1) num[i]=k;
+        }
+        return {blk,num,sol:sol.map(x=>x===5?0:x)};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),   // 0 vacía, 1-4 triángulo, 6 punto
+    solved(S){
+      const n=S.n, {blk,num}=S.puz, gm=U.geometry(n), val=i=>blk[i]?5:S.st[i]===6?0:S.st[i];
+      const get=(r,c)=>r<0||c<0||r>=n||c>=n?5:val(r*n+c);
+      for(let r=0;r<=n;r++)for(let c=0;c<=n;c++) if(!vertexOK(get,r,c))return false;
+      for(let i=0;i<n*n;i++) if(blk[i]&&num[i]>=0&&gm.nb[i].filter(j=>isTri(val(j))).length!==num[i])return false;
+      return true;
+    },
+    render(board,S,api,flash){
+      const n=S.n, {blk,num}=S.puz, gm=U.geometry(n), st=S.st, val=i=>blk[i]?5:st[i]===6?0:st[i];
+      const get=(r,c)=>r<0||c<0||r>=n||c>=n?5:val(r*n+c);
+      let h=`<svg viewBox="0 0 ${n} ${n}"><rect class="bg" x="0" y="0" width="${n}" height="${n}"/>`;
+      if(flash>=0) h+=`<rect class="hl" x="${flash%n}" y="${flash/n|0}" width="1" height="1"/>`;
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      for(let i=0;i<n*n;i++){ const x=i%n, y=i/n|0;
+        if(blk[i]){ h+=`<rect class="bk" x="${x}" y="${y}" width="1" height="1"/>`;
+          if(num[i]>=0){ const t=gm.nb[i].filter(j=>isTri(val(j))).length, f=gm.nb[i].filter(j=>!blk[j]&&st[j]!==6).length;
+            h+=`<text class="nm${S.errs&&(t>num[i]||f<num[i])?' e':(t===num[i]&&gm.nb[i].every(j=>blk[j]||st[j]))?' ok':''}" x="${x+.5}" y="${y+.5}">${num[i]}</text>`; } }
+        else if(isTri(st[i])){ const P=[[x,y],[x+1,y],[x+1,y+1],[x,y+1]], K=st[i]-1, pts=[P[K],P[(K+1)%4],P[(K+3)%4]];
+          h+=`<path class="tr" d="M${pts.map(p=>p.join(' ')).join('L')}Z"/>`; }
+        else if(st[i]===6) h+=`<circle class="dt" cx="${x+.5}" cy="${y+.5}" r=".08"/>`;
+      }
+      if(S.errs) for(let r=0;r<=n;r++)for(let c=0;c<=n;c++){
+        const cells=[[r-1,c-1],[r-1,c],[r,c-1],[r,c]].filter(([y,x])=>y>=0&&x>=0&&y<n&&x<n);
+        if(cells.some(([y,x])=>!blk[y*n+x]&&st[y*n+x]===0))continue;  // solo esquinas ya decididas
+        if(!vertexOK(get,r,c)) h+=`<circle class="bad" cx="${c}" cy="${r}" r=".12"/>`; }
+      h+=`<rect class="fr" x="0" y="0" width="${n}" height="${n}"/></svg>`;
+      board.className='board sh';
+      board.innerHTML='<div class="gen">Generando…</div>'+h;
+      board.onpointerdown=null; board.onpointermove=null; board.onpointerup=null;
+      board.onclick=e=>{
+        const S2=api.S; if(!S2||S2.won)return;
+        const r=board.getBoundingClientRect(), fx=(e.clientX-r.left)/r.width*n, fy=(e.clientY-r.top)/r.height*n;
+        const x=Math.min(n-1,Math.max(0,Math.floor(fx))), y=Math.min(n-1,Math.max(0,Math.floor(fy))), i=y*n+x;
+        if(S2.puz.blk[i])return;
+        const dx=fx-x, dy=fy-y;
+        let v=6; if(Math.abs(dx-.5)>.17||Math.abs(dy-.5)>.17) v=dy<.5?(dx<.5?1:2):(dx<.5?4:3);
+        api.pushUndo(); S2.st[i]=S2.st[i]===v?0:v; api.commit();
+      };
+    },
+    hint(S){
+      const {sol,blk}=S.puz, N=S.n*S.n, cur=i=>S.st[i]===6?0:S.st[i];
+      const wrong=U.range(N).filter(i=>!blk[i]&&S.st[i]&&cur(i)!==sol[i]);
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla estaba mal'}; }
+      const miss=U.range(N).filter(i=>!blk[i]&&isTri(sol[i])&&S.st[i]!==sol[i]);
+      const open=miss.length?miss:U.range(N).filter(i=>!blk[i]&&S.st[i]===0);
+      if(!open.length) return null;
+      const i=U.pick(open); S.st[i]=sol[i]||6;
+      return {i,msg:sol[i]?'Aquí va un triángulo':'Esta casilla queda blanca'};
+    }
+  });
+})();
+
+/* ================== TATAMIBARI ================== */
+(()=>{
+  const enc=(r,c,h,w,n)=>((r*n+c)*n+(h-1))*n+(w-1)+1;
+  const dec=(code,n)=>{let x=code-1;const w=x%n+1;x=x/n|0;const h=x%n+1;x=x/n|0;return {r:x/n|0,c:x%n,h,w}};
+  const cellsOf=RECT.cellsOf;
+  const shape=(w,h)=>w===h?1:w>h?2:3;   // 1 +, 2 —, 3 |
+  const SYM=['','+','—','|'];
+  function fourCorner(owner,n){ for(let r=1;r<n;r++)for(let c=1;c<n;c++){ const a=owner[(r-1)*n+c-1],b=owner[(r-1)*n+c],d=owner[r*n+c-1],e=owner[r*n+c]; if(a>=0&&b>=0&&d>=0&&e>=0&&new Set([a,b,d,e]).size===4) return true; } return false; }
+  function solve(clues,n,limit,maxNodes){
+    const N=n*n, ks=[], opts=[];
+    for(let i=0;i<N;i++) if(clues[i]){
+      const r0=i/n|0, c0=i%n, L=[];
+      for(let h=1;h<=n;h++) for(let w=1;w<=n;w++){ if(shape(w,h)!==clues[i])continue;
+        for(let r=Math.max(0,r0-h+1);r<=Math.min(r0,n-h);r++) for(let c=Math.max(0,c0-w+1);c<=Math.min(c0,n-w);c++){
+          const R={r,c,w,h}, cs=cellsOf(R,n); if(cs.some(j=>j!==i&&clues[j]))continue; R.cells=cs; L.push(R); } }
+      ks.push(i); opts.push(L);
+    }
+    const own=new Int32Array(N).fill(-1), chosen=new Array(ks.length).fill(null), sols=[], reach=new Uint8Array(N); let nodes=0,aborted=false;
+    const cornerBad=R=>{ for(const [y,x] of [[R.r,R.c],[R.r,R.c+R.w],[R.r+R.h,R.c],[R.r+R.h,R.c+R.w]]){ if(y<1||x<1||y>=n||x>=n)continue;
+      const a=own[(y-1)*n+x-1],b=own[(y-1)*n+x],d=own[y*n+x-1],e=own[y*n+x]; if(a>=0&&b>=0&&d>=0&&e>=0&&new Set([a,b,d,e]).size===4)return true; } return false; };
+    (function rec(left){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!left){ if(own.every(x=>x>=0)) sols.push(chosen.map(o=>enc(o.r,o.c,o.h,o.w,n))); return; }
+      reach.fill(0); let bk=-1,bl=null;
+      for(let k=0;k<ks.length;k++){ if(chosen[k])continue;
+        const L=opts[k].filter(o=>o.cells.every(j=>own[j]<0)); if(!L.length)return;
+        for(const o of L) for(const j of o.cells) reach[j]=1;
+        if(!bl||L.length<bl.length){bk=k;bl=L} }
+      for(let j=0;j<N;j++) if(own[j]<0&&!reach[j])return;
+      for(const o of bl){ o.cells.forEach(j=>own[j]=bk); chosen[bk]=o;
+        if(!cornerBad(o)) rec(left-1);
+        chosen[bk]=null; o.cells.forEach(j=>own[j]=-1); if(sols.length>=limit||aborted)return; }
+    })(ks.length);
+    return {sols,aborted};
+  }
+  function groups(st){ const G={}; st.forEach((x,i)=>{ if(x)(G[x]=G[x]||[]).push(i); }); return G; }
+  function okRect(S,code,cs){ const n=S.n, R=dec(code,n), cl=cs.filter(i=>S.puz.clues[i]); return cs.length===R.w*R.h&&cl.length===1&&S.puz.clues[cl[0]]===shape(R.w,R.h); }
+  function place(st,R,n){ const cs=cellsOf(R,n), kill=new Set(cs.map(i=>st[i]).filter(x=>x)); for(let i=0;i<st.length;i++) if(kill.has(st[i])) st[i]=0; const code=enc(R.r,R.c,R.h,R.w,n); cs.forEach(i=>st[i]=code); }
+  let drag=null;
+  register({
+    id:'tatamibari', name:'Tatamibari', jp:true,
+    desc:'Divide en rectángulos según su símbolo (+ cuadrado, — apaisado, | alargado) sin que se junten cuatro esquinas.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M4 24H64 M24 24V64 M24 44H64 M44 4V24" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="13" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="24" y="19">—</text><text x="54" y="19">+</text><text x="14" y="49">|</text><text x="44" y="39">—</text><text x="44" y="59">—</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    sizes:[5,6,7], defaultSize:6,
+    rules:`<ol>
+      <li>Divide toda la cuadrícula en <b>rectángulos</b>, cada uno con <b>exactamente un símbolo</b>.</li>
+      <li><b>+</b> es un cuadrado, <b>—</b> un rectángulo más ancho que alto y <b>|</b> uno más alto que ancho.</li>
+      <li>En ningún punto pueden coincidir las esquinas de <b>cuatro rectángulos</b>.</li></ol>
+      <ul><li><b>Arrastra</b> de una esquina a la opuesta para dibujar un rectángulo. Si pisa otros, los sustituye.</li>
+      <li>Toca un rectángulo para borrarlo. Tocar una casilla vacía crea un cuadrado de 1×1.</li></ul>`,
+    generate(n){
+      const N=n*n;
+      for(;;){
+        const P=RECT.partition(n,n<=6?6:8,(w,h)=>{const a=w*h;return a===1?0.25:a===2?0.7:Math.max(w,h)>4?0.4:1});
+        if(fourCorner(P.cov,n))continue;
+        for(let t=0;t<6;t++){
+          const clues=new Array(N).fill(0);
+          for(const R of P.rects) clues[U.pick(cellsOf(R,n))]=shape(R.w,R.h);
+          const r=solve(clues,n,2,15000);
+          if(!r.aborted&&r.sols.length===1) return {clues,sol:r.sols[0]};
+        }
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      if(S.st.some(x=>!x))return false;
+      const G=groups(S.st); if(!Object.keys(G).every(k=>okRect(S,+k,G[k])))return false;
+      return !fourCorner(S.st.map(x=>x),S.n);
+    },
+    render(board,S,api,flash){
+      const n=S.n, st=S.st, {clues}=S.puz, G=groups(st), codes=Object.keys(G).map(Number);
+      let h=`<svg viewBox="0 0 ${n} ${n}"><rect class="bgd" x="0" y="0" width="${n}" height="${n}"/>`;
+      for(const code of codes){ const R=dec(code,n), ok=okRect(S,code,G[code]);
+        h+=`<rect class="rc${S.errs&&!ok?' e':''}${flash===code?' h':''}" style="--h:${(R.r*7+R.c*13)*29%360}" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/>`; }
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      for(const code of codes){ const R=dec(code,n); h+=`<rect class="ro" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/>`; }
+      if(S.errs) for(let r=1;r<n;r++)for(let c=1;c<n;c++){ const a=[st[(r-1)*n+c-1],st[(r-1)*n+c],st[r*n+c-1],st[r*n+c]]; if(a.every(x=>x)&&new Set(a).size===4) h+=`<circle class="bad" cx="${c}" cy="${r}" r=".14"/>`; }
+      if(drag&&drag.moved){ const R=drag.rect(); h+=`<rect class="pv" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/>`; }
+      for(let i=0;i<n*n;i++) if(clues[i]) h+=`<text class="cl" x="${i%n+.5}" y="${(i/n|0)+.5}">${SYM[clues[i]]}</text>`;
+      board.className='board sk tb';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'<rect class="fr" x="0" y="0" width="'+n+'" height="'+n+'"/></svg>';
+      const cellAt=e=>{const r=board.getBoundingClientRect();const x=Math.floor((e.clientX-r.left)/r.width*n),y=Math.floor((e.clientY-r.top)/r.height*n);return [Math.max(0,Math.min(n-1,y)),Math.max(0,Math.min(n-1,x))]};
+      board.onclick=null;
+      board.onpointerdown=e=>{ const S2=api.S; if(!S2||S2.won)return; e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+        const a=cellAt(e); drag={a,cur:a,moved:false,rect(){const [r1,c1]=this.a,[r2,c2]=this.cur;return {r:Math.min(r1,r2),c:Math.min(c1,c2),h:Math.abs(r1-r2)+1,w:Math.abs(c1-c2)+1}}}; };
+      board.onpointermove=e=>{ if(!drag)return; const b=cellAt(e); if(b[0]===drag.cur[0]&&b[1]===drag.cur[1])return; drag.cur=b; drag.moved=true; api.draw(); };
+      board.onpointerup=board.onpointercancel=e=>{ if(!drag)return; const g=drag; drag=null; const S2=api.S; if(e.type==='pointercancel'){api.draw();return}
+        const R=g.rect(), i=g.a[0]*n+g.a[1]; api.pushUndo();
+        if(R.w===1&&R.h===1&&S2.st[i]){ const code=S2.st[i]; for(let j=0;j<S2.st.length;j++) if(S2.st[j]===code) S2.st[j]=0; }
+        else place(S2.st,R,n);
+        api.commit(); };
+    },
+    hint(S){
+      const n=S.n, sol=S.puz.sol, G=groups(S.st);
+      const wrong=Object.keys(G).map(Number).filter(c=>!sol.includes(c));
+      if(wrong.length){ const c=U.pick(wrong); S.st.forEach((x,i)=>{if(x===c)S.st[i]=0}); return {i:-1,msg:'Ese rectángulo no era correcto'}; }
+      const miss=sol.filter(c=>!G[c]||G[c].length!==cellsOf(dec(c,n),n).length);
+      if(!miss.length) return null;
+      const c=U.pick(miss), R=dec(c,n); place(S.st,R,n);
+      return {i:c,msg:'Aquí va un rectángulo de '+R.h+'×'+R.w};
+    }
+  });
+})();
+
+/* ================== TENTAISHO (GALAXIAS) ================== */
+(()=>{
+  // centros en medias unidades: (y,x) entre 0 y 2n; la casilla (r,c) tiene su centro en (2r+1,2c+1)
+  const mirror=(i,g,n)=>{ const r=i/n|0,c=i%n, r2=g.y-r-1, c2=g.x-c-1; return r2<0||c2<0||r2>=n||c2>=n?-1:r2*n+c2; };
+  const core=(g,n)=>{ const rs=g.y%2?[(g.y-1)/2]:[g.y/2-1,g.y/2], cs=g.x%2?[(g.x-1)/2]:[g.x/2-1,g.x/2]; const o=[]; for(const r of rs)for(const c of cs)o.push(r*n+c); return o; };
+  function build(n){
+    const N=n*n, gm=U.geometry(n), gal=new Int32Array(N).fill(-1), C=[], maxS=n<=6?8:12;
+    for(const s of U.shuffle(U.range(N))){
+      if(gal[s]>=0)continue;
+      const r=s/n|0,c=s%n, opts=[{y:2*r+1,x:2*c+1}];
+      if(c+1<n&&gal[s+1]<0) opts.push({y:2*r+1,x:2*c+2});
+      if(r+1<n&&gal[s+n]<0) opts.push({y:2*r+2,x:2*c+1});
+      if(r+1<n&&c+1<n&&gal[s+1]<0&&gal[s+n]<0&&gal[s+n+1]<0) opts.push({y:2*r+2,x:2*c+2});
+      const g=U.pick(opts), id=C.length; C.push(g);
+      const cells=core(g,n); cells.forEach(i=>gal[i]=id);
+      const target=2+Math.random()*(maxS-2)|0;
+      while(cells.length<target){
+        const f=[]; for(const a of cells) for(const b of gm.nb[a]){ if(gal[b]>=0)continue; const m=mirror(b,g,n); if(m>=0&&gal[m]<0&&!f.includes(b)) f.push(b); }
+        if(!f.length)break;
+        const b=U.pick(f), m=mirror(b,g,n); gal[b]=id; gal[m]=id; cells.push(b); if(m!==b) cells.push(m);
+      }
+    }
+    return {C,gal:Array.from(gal)};
+  }
+  function solve(C,n,limit,maxNodes){
+    const N=n*n, G=C.length, gm=U.geometry(n), sols=[]; let nodes=0,aborted=false;
+    const D0=new Uint8Array(N*G);
+    for(let g=0;g<G;g++) for(let i=0;i<N;i++) if(mirror(i,C[g],n)>=0) D0[i*G+g]=1;
+    C.forEach((g,k)=>core(g,n).forEach(i=>{ for(let h=0;h<G;h++) D0[i*G+h]=h===k?1:0; }));
+    function prop(D){
+      let ch=true;
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++){ let cnt=0;
+          for(let g=0;g<G;g++){ if(!D[i*G+g])continue; const m=mirror(i,C[g],n); if(m<0||!D[m*G+g]){D[i*G+g]=0;ch=true;continue} cnt++; }
+          if(!cnt)return false; }
+        for(let g=0;g<G;g++){
+          const seen=new Uint8Array(N), q=core(C[g],n).slice(); q.forEach(i=>seen[i]=1);
+          while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(!seen[b]&&D[b*G+g]){seen[b]=1;q.push(b)}}
+          for(let i=0;i<N;i++) if(!seen[i]&&D[i*G+g]){D[i*G+g]=0;ch=true}
+        }
+      }
+      return true;
+    }
+    (function rec(D){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(D))return;
+      let best=-1,bc=99;
+      for(let i=0;i<N;i++){ let c=0; for(let g=0;g<G;g++) c+=D[i*G+g]; if(c>1&&c<bc){bc=c;best=i;if(c===2)break} }
+      if(best<0){ sols.push(U.range(N).map(i=>{for(let g=0;g<G;g++) if(D[i*G+g])return g+1})); return; }
+      for(let g=0;g<G;g++){ if(!D[best*G+g])continue;
+        const E=D.slice(); const m=mirror(best,C[g],n);
+        for(const j of [best,m]) for(let h=0;h<G;h++) E[j*G+h]=h===g?1:0;
+        rec(E); if(sols.length>=limit||aborted)return; }
+    })(D0);
+    return {sols,aborted};
+  }
+  function regionOK(S,g){
+    const n=S.n, C=S.puz.C[g-1], cs=U.range(n*n).filter(i=>S.st[i]===g);
+    if(!core(C,n).every(i=>S.st[i]===g))return false;
+    if(cs.some(i=>{const m=mirror(i,C,n);return m<0||S.st[m]!==g}))return false;
+    const gm=U.geometry(n), seen=new Set([cs[0]]), q=[cs[0]];
+    while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(S.st[b]===g&&!seen.has(b)){seen.add(b);q.push(b)}}
+    return seen.size===cs.length;
+  }
+  let sel=0;
+  register({
+    id:'tentaisho', name:'Tentaisho', jp:true,
+    desc:'Galaxias: divide el tablero en regiones simétricas, cada una girando alrededor de su punto.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M4 4H44V24H24V44H4Z" fill="hsl(210 60% 85%)"/><path d="M44 4H64V64H24V44H44Z" fill="hsl(40 70% 84%)"/>
+      <path d="M4 4H64V64H4Z M44 4V24H24V44H4 M24 44V64 M24 44H44V4" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="24" cy="24" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/><circle cx="44" cy="34" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/><circle cx="14" cy="54" r="4" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/></svg>`,
+    sizes:[5,6,7,8,10], defaultSize:7,
+    rules:`<ol>
+      <li>Divide el tablero en regiones (galaxias), cada una con <b>exactamente un punto</b>.</li>
+      <li>Cada galaxia es <b>simétrica respecto a su punto</b>: si la giras media vuelta alrededor de él, queda igual.</li>
+      <li>Los puntos pueden estar en el centro de una casilla, en medio de un lado o en una esquina.</li></ol>
+      <ul><li>Toca un <b>punto</b> para elegir su galaxia y después toca o arrastra por las casillas para pintarlas. La casilla simétrica se pinta sola.</li>
+      <li>Tocar una casilla ya pintada de esa galaxia la borra (y su simétrica).</li></ul>`,
+    generate(n){
+      for(;;){
+        const {C,gal}=build(n);
+        if(C.length<n)continue;
+        const r=solve(C,n,2,6000);
+        if(!r.aborted&&r.sols.length===1) return {C,sol:gal.map(x=>x+1)};
+      }
+    },
+    init:(puz,n)=>{ const st=new Array(n*n).fill(0); puz.C.forEach((g,k)=>core(g,n).forEach(i=>st[i]=k+1)); return st; },
+    solved(S){ if(S.st.some(x=>!x))return false; return S.puz.C.every((_,k)=>regionOK(S,k+1)); },
+    render(board,S,api,flash){
+      const n=S.n, st=S.st, {C}=S.puz, fixed=new Set(); C.forEach(g=>core(g,n).forEach(i=>fixed.add(i)));
+      if(sel>C.length) sel=0;
+      const bad=new Set(); if(S.errs) C.forEach((_,k)=>{ if(st.includes(k+1)&&!regionOK(S,k+1)) st.forEach((x,i)=>{if(x===k+1)bad.add(i)}); });
+      let h=`<svg viewBox="0 0 ${n} ${n}"><rect class="bg" x="0" y="0" width="${n}" height="${n}"/>`;
+      st.forEach((g,i)=>{ if(g) h+=`<rect class="gx${bad.has(i)?' e':''}${flash===i?' h':''}" style="--h:${(g*137.5)%360}" x="${i%n}" y="${i/n|0}" width="1" height="1"/>`; });
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      for(let i=0;i<n*n;i++){ const r=i/n|0,c=i%n;
+        if(c<n-1&&st[i]!==st[i+1]) h+=`<line class="wl" x1="${c+1}" y1="${r}" x2="${c+1}" y2="${r+1}"/>`;
+        if(r<n-1&&st[i]!==st[i+n]) h+=`<line class="wl" x1="${c}" y1="${r+1}" x2="${c+1}" y2="${r+1}"/>`; }
+      C.forEach((g,k)=>h+=`<circle class="dot${sel===k+1?' on':''}" cx="${g.x/2}" cy="${g.y/2}" r="${sel===k+1?.2:.15}"/>`);
+      h+=`<rect class="fr" x="0" y="0" width="${n}" height="${n}"/></svg>`;
+      board.className='board tn';
+      board.innerHTML='<div class="gen">Generando…</div>'+h;
+      const pos=e=>{const r=board.getBoundingClientRect();return [(e.clientX-r.left)/r.width*n,(e.clientY-r.top)/r.height*n]};
+      const cellOf=(x,y)=>Math.min(n-1,Math.max(0,Math.floor(y)))*n+Math.min(n-1,Math.max(0,Math.floor(x)));
+      const paint=(i,val)=>{ const S2=api.S; if(fixed.has(i))return false; const g=val||S2.st[i]; const m=g?mirror(i,C[g-1],n):-1;
+        if(val&&m<0)return false;
+        let ch=false; for(const j of val?[i,m]:[i,m]) if(j>=0&&!fixed.has(j)&&S2.st[j]!==val&&(val||S2.st[j]===g)){S2.st[j]=val;ch=true}
+        return ch; };
+      board.onclick=null;
+      board.onpointerdown=e=>{
+        const S2=api.S; if(!S2||S2.won)return;
+        e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+        const [x,y]=pos(e); const k=C.findIndex(g=>Math.hypot(g.x/2-x,g.y/2-y)<.28);
+        if(k>=0){ sel=sel===k+1?0:k+1; board._g=null; api.draw(); return; }
+        const i=cellOf(x,y);
+        if(!sel){ if(fixed.has(i)){ sel=st[i]; api.draw(); } else api.say('Toca primero un punto'); return; }
+        api.pushUndo();
+        const val=S2.st[i]===sel?0:sel; const ch=paint(i,val);
+        board._g={val,last:i,ch}; api.draw();
+      };
+      board.onpointermove=e=>{ const g=board._g; if(!g)return; const [x,y]=pos(e), i=cellOf(x,y); if(i===g.last)return; g.last=i; if(paint(i,g.val)){g.ch=true;api.draw();} };
+      board.onpointerup=board.onpointercancel=()=>{ const g=board._g; if(!g)return; board._g=null; if(!g.ch)api.S.undo.pop(); api.commit(); };
+    },
+    hint(S){
+      const sol=S.puz.sol, N=S.n*S.n;
+      const wrong=U.range(N).filter(i=>S.st[i]&&S.st[i]!==sol[i]);
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla no era de esa galaxia'}; }
+      const open=U.range(N).filter(i=>!S.st[i]);
+      if(!open.length) return null;
+      const i=U.pick(open); S.st[i]=sol[i]; sel=sol[i];
+      return {i,msg:'Esta casilla es de la galaxia marcada'};
+    }
+  });
+})();
+
+/* ================== utilidades de lazos por centros de casilla (Yajilin, Country Road) ================== */
+const LOOP=(()=>{
+  const MD=[[0,1],[1,0],[0,-1],[-1,0]];
+  const step=(i,d,n)=>{const r=(i/n|0)+MD[d][0],c=i%n+MD[d][1];return (r<0||c<0||r>=n||c>=n)?-1:r*n+c};
+  const eid=(a,b,n)=>{ if(a>b)[a,b]=[b,a]; return b-a===1?(a/n|0)*(n-1)+a%n : n*(n-1)+a; };
+  const ends=(e,n)=>{ if(e<n*(n-1)){const r=e/(n-1)|0,c=e%(n-1);const a=r*n+c;return [a,a+1]} const a=e-n*(n-1); return [a,a+n]; };
+  const cache={};
+  const cellE=n=>cache[n]||(cache[n]=U.range(n*n).map(i=>[0,1,2,3].map(d=>{const j=step(i,d,n);return j<0?-1:eid(i,j,n)}).filter(e=>e>=0)));
+  function fromFaces(inS,n){
+    const F=n-1, adj=Array.from({length:n*n},()=>[]), edge=(a,b)=>{adj[a].push(b);adj[b].push(a)};
+    const f=(r,c)=>!!(r>=0&&c>=0&&r<F&&c<F&&inS[r*F+c]);
+    for(let r=0;r<n;r++)for(let c=0;c<n-1;c++) if(f(r-1,c)!==f(r,c)) edge(r*n+c,r*n+c+1);
+    for(let r=0;r<n-1;r++)for(let c=0;c<n;c++) if(f(r,c-1)!==f(r,c)) edge(r*n+c,(r+1)*n+c);
+    let start=-1,cnt=0; for(let i=0;i<n*n;i++){ if(adj[i].length&&adj[i].length!==2)return null; if(adj[i].length){cnt++;if(start<0)start=i} }
+    if(start<0)return null;
+    const loop=[start]; let prev=-1,cur=start;
+    for(;;){ const nx=adj[cur][0]!==prev?adj[cur][0]:adj[cur][1]; if(nx===start)break; loop.push(nx); prev=cur; cur=nx; if(loop.length>cnt)return null; }
+    return loop.length===cnt?loop:null;
+  }
+  function random(n,lo,hi){
+    const F=n-1, inS=new Uint8Array(F*F); inS[(Math.random()*F|0)*F+(Math.random()*F|0)]=1;
+    const target=n*n*(lo+Math.random()*(hi-lo)); let best=inS.slice(), bl=4;
+    for(let it=0;it<F*F*12;it++){
+      const cand=[],thin=[]; for(let i=0;i<F*F;i++) if(!inS[i]){const r=i/F|0,c=i%F; const k=(r>0&&inS[i-F]?1:0)+(r<F-1&&inS[i+F]?1:0)+(c>0&&inS[i-1]?1:0)+(c<F-1&&inS[i+1]?1:0); if(k){cand.push(i); if(k===1)thin.push(i)}}
+      if(!cand.length)break; const f=U.pick(thin.length&&Math.random()<0.75?thin:cand); inS[f]=1;
+      const L=fromFaces(inS,n); if(!L){inS[f]=0;continue} if(L.length>=bl){bl=L.length;best=inS.slice()} if(L.length>=target)break;
+    }
+    return fromFaces(best,n);
+  }
+  function edgesOf(loop,n){ const E=new Array(2*n*(n-1)).fill(0); for(let k=0;k<loop.length;k++) E[eid(loop[k],loop[(k+1)%loop.length],n)]=1; return E; }
+  // ¿las aristas forman un único lazo? devuelve las casillas del lazo o null
+  function single(E,n){
+    const CE=cellE(n), N=n*n; let start=-1,cnt=0;
+    for(let i=0;i<N;i++){ const d=CE[i].reduce((a,e)=>a+(E[e]===1),0); if(d&&d!==2)return null; if(d){cnt++;if(start<0)start=i} }
+    if(start<0)return null;
+    const seen=new Set([start]); let prev=-1,cur=start;
+    for(;;){ const e=CE[cur].find(e=>E[e]===1&&e!==prev); const [a,b]=ends(e,n); const nx=a===cur?b:a; prev=e; if(nx===start)break; if(seen.has(nx))return null; seen.add(nx); cur=nx; }
+    return seen.size===cnt?seen:null;
+  }
+  // propagación común: grado 0 o 2 por casilla (mustVisit/mustNot opcionales) y evitar lazos cerrados antes de tiempo
+  function subloops(E,n,set){
+    const N=n*n, CE=cellE(n), comp=new Int32Array(N).fill(-1), info=[];
+    for(let s=0;s<N;s++){ if(comp[s]>=0||!CE[s].some(e=>E[e]===1))continue;
+      const k=info.length, q=[s], endp=[]; comp[s]=k; let cyc=true;
+      while(q.length){ const a=q.pop(); let d=0; for(const e of CE[a]) if(E[e]===1){ d++; const [x,y]=ends(e,n), b=x===a?y:x; if(comp[b]<0){comp[b]=k;q.push(b)} } if(d===1){endp.push(a);cyc=false} }
+      info.push({endp,cyc}); }
+    return {info,comp};
+  }
+  // interacción: arrastrar dibuja, tocar cerca de un lado lo alterna (línea → ✕ → nada), tocar el centro llama a onCell
+  function bind(board,api,n,off,onCell){
+    const toGrid=e=>{const r=board.getBoundingClientRect();return [(e.clientX-r.left)/r.width*n,(e.clientY-r.top)/r.height*n]};
+    const cellOf=(x,y)=>(x<0||y<0||x>=n||y>=n)?-1:Math.floor(y)*n+Math.floor(x);
+    board.onclick=null;
+    board.onpointerdown=e=>{ const S2=api.S; if(!S2||S2.won)return; e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+      const [x,y]=toGrid(e); board._g={x,y,cell:cellOf(x,y),mode:null,moved:false,changed:false}; api.pushUndo(); };
+    board.onpointermove=e=>{ const g=board._g; if(!g)return; const [x,y]=toGrid(e), c=cellOf(x,y); if(c<0||c===g.cell||g.cell<0)return;
+      const d=[0,1,2,3].find(d=>step(g.cell,d,n)===c); if(d===undefined){g.cell=c;return}
+      const id=off+eid(g.cell,c,n), S2=api.S;
+      if(g.mode===null) g.mode=S2.st[id]===1?0:1;
+      if(S2.st[id]!==g.mode){S2.st[id]=g.mode;g.changed=true}
+      g.moved=true; g.cell=c; api.draw(); };
+    board.onpointerup=board.onpointercancel=e=>{ const g=board._g; if(!g)return; board._g=null; const S2=api.S;
+      if(!g.moved&&e.type==='pointerup'){
+        const cx=g.x-Math.floor(g.x), cy=g.y-Math.floor(g.y), c=cellOf(g.x,g.y);
+        const opts=[[1-cx,0],[1-cy,1],[cx,2],[cy,3]].sort((a,b)=>a[0]-b[0]);
+        const [dist,d]=opts[0], j=c>=0?step(c,d,n):-1;
+        if(dist<.24&&j>=0){ const id=off+eid(c,j,n); S2.st[id]=(S2.st[id]+1)%3; g.changed=true; }
+        else if(c>=0&&onCell&&onCell(S2,c)) g.changed=true;
+      }
+      if(!g.changed) S2.undo.pop();
+      api.commit(); };
+  }
+  function drawEdges(st,n,off,flash){
+    let h='';
+    for(let e=0;e<2*n*(n-1);e++){ const v=st[off+e]; if(!v)continue; const [a,b]=ends(e,n), x1=a%n+.5,y1=(a/n|0)+.5,x2=b%n+.5,y2=(b/n|0)+.5;
+      if(v===1) h+=`<line class="ln${flash===off+e?' h':''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+      else { const mx=(x1+x2)/2,my=(y1+y2)/2,d=.09; h+=`<path class="xx" d="M${mx-d} ${my-d}L${mx+d} ${my+d}M${mx+d} ${my-d}L${mx-d} ${my+d}"/>`; } }
+    return h;
+  }
+  return {step,eid,ends,cellE,random,edgesOf,single,subloops,bind,drawEdges};
+})();
+
+/* ================== YAJILIN ================== */
+(()=>{
+  const ARW=['→','↓','←','↑'];
+  const rayOf=(i,d,n)=>{const o=[];let j=LOOP.step(i,d,n);while(j>=0){o.push(j);j=LOOP.step(j,d,n)}return o};
+  function solve(clue,n,limit,maxNodes){
+    const N=n*n, M=2*n*(n-1), CE=LOOP.cellE(n), gm=U.geometry(n), sols=[]; let nodes=0,aborted=false;
+    const isC=i=>!!clue[i];
+    const rays=U.range(N).map(i=>clue[i]?rayOf(i,clue[i].d,n).filter(j=>!clue[j]):null);
+    function prop(col,E){
+      let ch=true;
+      const setE=(e,v)=>{ if(E[e]===v)return true; if(E[e]>=0)return false; E[e]=v; ch=true; return true; };
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++){ const es=CE[i]; let yes=0,unk=0; for(const e of es){ if(E[e]===1)yes++; else if(E[e]<0)unk++; }
+          if(isC(i)||col[i]===1){ if(yes)return false; if(unk) for(const e of es) if(E[e]<0) setE(e,0);
+            if(col[i]===1) for(const j of gm.nb[i]) if(!isC(j)){ if(col[j]===1)return false; if(col[j]<0){col[j]=0;ch=true} }
+            continue; }
+          if(col[i]===0){ if(yes>2||yes+unk<2)return false; if(unk&&yes===2) for(const e of es) if(E[e]<0) setE(e,0); if(unk&&yes+unk===2) for(const e of es) if(E[e]<0) setE(e,1); }
+          else { if(yes){col[i]=0;ch=true} else if(unk<2){col[i]=1;ch=true} } }
+        for(let i=0;i<N;i++){ if(!clue[i])continue; const t=clue[i].t; let b=0; const u=[]; for(const j of rays[i]){ if(col[j]===1)b++; else if(col[j]<0)u.push(j); }
+          if(b>t||b+u.length<t)return false;
+          if(u.length&&b===t){u.forEach(j=>col[j]=0);ch=true} else if(u.length&&b+u.length===t){u.forEach(j=>col[j]=1);ch=true} }
+        if(ch)continue;
+        const {info,comp}=LOOP.subloops(E,n);
+        const cyc=info.findIndex(x=>x.cyc);
+        if(cyc>=0){ if(info.length>1)return false;
+          for(let i=0;i<N;i++) if(!isC(i)&&comp[i]!==cyc){ if(col[i]===0)return false; if(col[i]<0){col[i]=1;ch=true} }
+          for(let e=0;e<M;e++) if(E[e]<0){E[e]=0;ch=true}
+        } else if(info.length>1) for(const I of info){ const [a,b]=I.endp; const e=CE[a].find(e=>CE[b].includes(e)); if(e!==undefined&&E[e]<0) setE(e,0); }
+      }
+      return true;
+    }
+    (function rec(col,E){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(col,E))return;
+      let pe=-1;
+      for(let i=0;i<N&&pe<0;i++){ if(isC(i))continue; let yes=0; for(const e of CE[i]) if(E[e]===1)yes++; if(yes===1) pe=CE[i].find(e=>E[e]<0)??-1; }
+      if(pe>=0){ for(const v of [1,0]){ const F=E.slice(); F[pe]=v; rec(col.slice(),F); if(sols.length>=limit||aborted)return; } return; }
+      let pc=-1; for(let i=0;i<N;i++) if(!isC(i)&&col[i]<0){pc=i;break}
+      if(pc>=0){ for(const v of [1,0]){ const c=col.slice(); c[pc]=v; rec(c,E.slice()); if(sols.length>=limit||aborted)return; } return; }
+      const e=E.indexOf(-1);
+      if(e>=0){ for(const v of [1,0]){ const F=E.slice(); F[e]=v; rec(col.slice(),F); if(sols.length>=limit||aborted)return; } return; }
+      const L=LOOP.single(Array.from(E),n); if(!L)return;
+      for(let i=0;i<N;i++) if(!isC(i)&&col[i]===0&&!L.has(i))return;
+      sols.push({col:Array.from(col),E:Array.from(E)});
+    })(new Int8Array(N).fill(-1),new Int8Array(M).fill(-1));
+    return {sols,aborted};
+  }
+  function generate(n){
+    const N=n*n, gm=U.geometry(n);
+    for(let t=0;;t++){
+      const loop=LOOP.random(n,0.6,0.75); if(!loop)continue;
+      const on=new Set(loop), col=new Array(N).fill(0), clue=new Array(N).fill(null);
+      for(const i of U.shuffle(U.range(N).filter(i=>!on.has(i)))) if(!gm.nb[i].some(j=>col[j]===1)&&Math.random()<0.75) col[i]=1;
+      const free=U.range(N).filter(i=>!on.has(i)&&!col[i]);
+      if(free.length<2)continue;
+      for(const i of free){
+        const opts=[0,1,2,3].map(d=>({d,t:rayOf(i,d,n).filter(j=>col[j]===1).length,len:rayOf(i,d,n).length})).filter(o=>o.len);
+        const good=opts.filter(o=>o.t>0); const o=U.pick(good.length&&Math.random()<0.8?good:opts);
+        clue[i]={d:o.d,t:o.t};
+      }
+      // los números de las pistas solo cuentan negras, no otras pistas
+      for(const i of free){ clue[i].t=rayOf(i,clue[i].d,n).filter(j=>col[j]===1&&!clue[j]).length; }
+      const r=solve(clue,n,2,20000);
+      if(!r.aborted&&r.sols.length===1) return {clue,sol:r.sols[0]};
+    }
+  }
+  function check(S){
+    const n=S.n, N=n*n, M=2*n*(n-1), CE=LOOP.cellE(n), gm=U.geometry(n), {clue}=S.puz, st=S.st, bad=new Set(), cb=new Set();
+    const black=i=>st[M+i]===1;
+    for(let i=0;i<N;i++){ if(clue[i]){ const ray=rayOf(i,clue[i].d,n).filter(j=>!clue[j]), b=ray.filter(black).length, f=ray.filter(j=>st[M+j]!==2&&!CE[j].some(e=>st[e]===1)).length; if(b>clue[i].t||f<clue[i].t) cb.add(i); continue; }
+      const d=CE[i].filter(e=>st[e]===1).length;
+      if(d>2||(black(i)&&d)) bad.add(i);
+      if(black(i)&&gm.nb[i].some(j=>black(j))) bad.add(i); }
+    return {bad,cb};
+  }
+  register({
+    id:'yajilin', name:'Yajilin', jp:true,
+    desc:'Ennegrece casillas según las flechas y une todas las demás con un único circuito cerrado.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M34 14H54V54H14V34H34Z" fill="none" stroke="var(--user)" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="4" y="4" width="20" height="20" fill="var(--btn)"/><text x="14" y="18" font-size="10" font-weight="800" text-anchor="middle" fill="var(--ink)">1→</text>
+      <rect x="4" y="24" width="20" height="20" fill="var(--shade)"/><rect x="24" y="24" width="20" height="20" fill="none"/>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2"/></svg>`,
+    sizes:[5,6,7], defaultSize:6,
+    rules:`<ol>
+      <li>Las casillas con <b>flecha y número</b> dicen cuántas casillas negras hay en esa dirección, hasta el borde.</li>
+      <li>Pinta de negro algunas casillas vacías. Dos negras no pueden tocarse por un lado.</li>
+      <li>Todas las demás casillas vacías deben quedar unidas por un <b>único circuito cerrado</b> que pasa por sus centros, sin cruzarse ni ramificarse. El circuito no pasa por las pistas ni por las negras.</li></ol>
+      <ul><li><b>Arrastra</b> de casilla en casilla para dibujar el circuito; si empiezas sobre una línea, la borras.</li>
+      <li>Toca el centro de una casilla: <b>negra</b> → <b>punto</b> (aquí pasa el circuito) → vacía.</li>
+      <li>Toca justo sobre el lado entre dos casillas: línea → ✕ → nada.</li></ul>`,
+    generate,
+    init:(puz,n)=>new Array(2*n*(n-1)+n*n).fill(0),
+    solved(S){
+      const n=S.n, N=n*n, M=2*n*(n-1), {clue}=S.puz, st=S.st, gm=U.geometry(n), black=i=>!clue[i]&&st[M+i]===1;
+      const L=LOOP.single(st.slice(0,M),n); if(!L)return false;
+      for(let i=0;i<N;i++){ if(clue[i]){ if(L.has(i)||rayOf(i,clue[i].d,n).filter(j=>!clue[j]&&black(j)).length!==clue[i].t)return false; continue; }
+        if(black(i)){ if(L.has(i)||gm.nb[i].some(black))return false; } else if(!L.has(i))return false; }
+      return true;
+    },
+    render(board,S,api,flash){
+      const n=S.n, N=n*n, M=2*n*(n-1), {clue}=S.puz, st=S.st, {bad,cb}=S.errs?check(S):{bad:new Set(),cb:new Set()};
+      let h=`<svg viewBox="0 0 ${n} ${n}">`;
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      for(let i=0;i<N;i++){ const x=i%n,y=i/n|0;
+        if(clue[i]) h+=`<rect class="ck" x="${x}" y="${y}" width="1" height="1"/><text class="ct${cb.has(i)?' e':''}" x="${x+.5}" y="${y+.52}">${clue[i].t}${ARW[clue[i].d]}</text>`;
+        else if(st[M+i]===1) h+=`<rect class="bk${bad.has(i)?' e':''}" x="${x}" y="${y}" width="1" height="1"/>`;
+        else if(st[M+i]===2) h+=`<circle class="pt" cx="${x+.5}" cy="${y+.5}" r=".08"/>`;
+        if(flash===M+i) h+=`<rect class="hl" x="${x}" y="${y}" width="1" height="1"/>`;
+        if(bad.has(i)&&st[M+i]!==1) h+=`<circle class="bad" cx="${x+.5}" cy="${y+.5}" r=".1"/>`; }
+      h+=LOOP.drawEdges(st,n,0,flash);
+      board.className='board ms yj';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'</svg>';
+      LOOP.bind(board,api,n,0,(S2,c)=>{ if(S2.puz.clue[c])return false; const k=M+c; S2.st[k]=(S2.st[k]+1)%3; if(S2.st[k]===1) LOOP.cellE(n)[c].forEach(e=>{if(S2.st[e]===1)S2.st[e]=0}); return true; });
+    },
+    hint(S){
+      const n=S.n, N=n*n, M=2*n*(n-1), {sol,clue}=S.puz, st=S.st;
+      const wrongC=U.range(N).filter(i=>!clue[i]&&((st[M+i]===1&&sol.col[i]!==1)||(st[M+i]===2&&sol.col[i]===1)));
+      if(wrongC.length){ const i=U.pick(wrongC); st[M+i]=0; return {i:M+i,msg:'Esta casilla estaba mal'}; }
+      const wrongE=U.range(M).filter(e=>(st[e]===1&&!sol.E[e])||(st[e]===2&&sol.E[e]));
+      if(wrongE.length){ const e=U.pick(wrongE); st[e]=0; return {i:e,msg:'Esa línea estaba mal'}; }
+      const bl=U.range(N).filter(i=>!clue[i]&&sol.col[i]===1&&st[M+i]!==1);
+      if(bl.length){ const i=U.pick(bl); st[M+i]=1; return {i:M+i,msg:'Esta casilla va en negro'}; }
+      const miss=U.range(M).filter(e=>sol.E[e]&&st[e]!==1);
+      if(!miss.length) return null;
+      const e=U.pick(miss); st[e]=1; return {i:e,msg:'El circuito pasa por aquí'};
+    }
+  });
+})();
+
+/* ================== COUNTRY ROAD ================== */
+(()=>{
+  function regionsOf(reg){ const R={}; reg.forEach((r,i)=>(R[r]=R[r]||[]).push(i)); return R; }
+  function solve(reg,num,n,limit,maxNodes){
+    const N=n*n, M=2*n*(n-1), CE=LOOP.cellE(n), gm=U.geometry(n), R=regionsOf(reg), sols=[]; let nodes=0,aborted=false;
+    const cross={}; for(const r in R) cross[r]=[];
+    for(let e=0;e<M;e++){ const [a,b]=LOOP.ends(e,n); if(reg[a]!==reg[b]){cross[reg[a]].push(e);cross[reg[b]].push(e)} }
+    const pairs=[]; for(let i=0;i<N;i++) for(const j of gm.nb[i]) if(j>i&&reg[i]!==reg[j]) pairs.push([i,j]);
+    function prop(E){
+      let ch=true;
+      const set=(e,v)=>{ if(E[e]===v)return; E[e]=v; ch=true; };
+      const deg=i=>{let y=0,u=0;for(const e of CE[i]){if(E[e]===1)y++;else if(E[e]<0)u++}return [y,u]};
+      while(ch){ ch=false;
+        for(let i=0;i<N;i++){ const [y,u]=deg(i); if(y>2||(y===1&&!u))return false; if(!u)continue;
+          if(y===2||(y===0&&u===1)) CE[i].forEach(e=>{if(E[e]<0)set(e,0)});
+          else if(y===1&&u===1) CE[i].forEach(e=>{if(E[e]<0)set(e,1)}); }
+        for(const r in R){ let y=0,u=0; for(const e of cross[r]){ if(E[e]===1)y++; else if(E[e]<0)u++; }
+          if(y>2||y+u<2)return false;
+          if(u&&y===2) cross[r].forEach(e=>{if(E[e]<0)set(e,0)}); else if(u&&y+u===2) cross[r].forEach(e=>{if(E[e]<0)set(e,1)});
+          const t=num[R[r][0]]; if(t<0)continue;
+          let vis=0,pos=0; const maybe=[];
+          for(const i of R[r]){ const [a,b]=deg(i); if(a)vis++; if(a||b>=2){pos++; if(!a)maybe.push(i)} }
+          if(vis>t||pos<t)return false;
+          if(maybe.length&&vis===t) maybe.forEach(i=>CE[i].forEach(e=>{if(E[e]<0)set(e,0)}));
+          else if(maybe.length&&pos===t) maybe.forEach(i=>{ const [a,b]=deg(i); if(b===2) CE[i].forEach(e=>{if(E[e]<0)set(e,1)}); }); }
+        for(const [a,b] of pairs){ for(const [x,y] of [[a,b],[b,a]]){ const [ya,ua]=deg(x); if(ya||ua)continue; const [yb,ub]=deg(y); if(yb+ub<2)return false; if(!yb&&ub===2) CE[y].forEach(e=>{if(E[e]<0)set(e,1)}); } }
+        if(ch)continue;
+        const {info}=LOOP.subloops(E,n);
+        if(info.some(x=>x.cyc)){ if(info.length>1)return false; for(let e=0;e<M;e++) if(E[e]<0) set(e,0); }
+        else if(info.length>1) for(const I of info){ const [a,b]=I.endp; const e=CE[a].find(e=>CE[b].includes(e)); if(e!==undefined&&E[e]<0) set(e,0); }
+      }
+      return true;
+    }
+    (function rec(E){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(E))return;
+      let pick=-1;
+      for(let i=0;i<N&&pick<0;i++){ let y=0; for(const e of CE[i]) if(E[e]===1)y++; if(y===1) pick=CE[i].find(e=>E[e]<0)??-1; }
+      if(pick<0) pick=E.indexOf(-1);
+      if(pick<0){ if(LOOP.single(Array.from(E),n)) sols.push(Array.from(E)); return; }
+      for(const v of [1,0]){ const F=E.slice(); F[pick]=v; rec(F); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(M).fill(-1));
+    return {sols,aborted};
+  }
+  function build(n){
+    const N=n*n, gm=U.geometry(n), loop=LOOP.random(n,0.5,0.7); if(!loop)return null;
+    const reg=new Array(N).fill(-1), L=loop.length, off=Math.random()*L|0; let k=0, id=0;
+    while(k<L){ const len=Math.min(L-k,U.pick([1,2,2,3,3,3,4,4])); for(let q=0;q<len;q++) reg[loop[(off+k+q)%L]]=id; k+=len; id++; }
+    if(id<3)return null;
+    const seen=new Uint8Array(N);
+    for(let s=0;s<N;s++){ if(reg[s]>=0||seen[s])continue;
+      const comp=[s],q=[s]; seen[s]=1;
+      while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(reg[b]<0&&!seen[b]){seen[b]=1;comp.push(b);q.push(b)}}
+      const nbr=new Set(); comp.forEach(a=>gm.nb[a].forEach(b=>{if(reg[b]>=0)nbr.add(reg[b])}));
+      const r=U.pick([...nbr]); comp.forEach(a=>reg[a]=r); }
+    const ids=[...new Set(reg)]; const map={}; ids.forEach((x,k)=>map[x]=k);
+    const R=reg.map(x=>map[x]), E=LOOP.edgesOf(loop,n), on=new Set(loop);
+    const cnt={}; R.forEach((r,i)=>{ if(on.has(i)) cnt[r]=(cnt[r]||0)+1; });
+    const first=U.range(N).map(i=>R.indexOf(R[i]));
+    return {reg:R,num:U.range(N).map(i=>cnt[R[i]]),first,E};
+  }
+  register({
+    id:'countryroad', name:'Country Road', jp:true,
+    desc:'Un circuito que visita cada región una sola vez; los números dicen cuántas casillas recorre en ella.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M14 14H54V54H34V34H14Z" fill="none" stroke="var(--user)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M4 24H24V64 M44 4V44H64" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="9" font-weight="800" fill="var(--ink)"><text x="7" y="13">2</text><text x="47" y="13">3</text><text x="47" y="53">2</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    sizes:[5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Dibuja un <b>único circuito cerrado</b> que une centros de casillas, sin cruzarse ni ramificarse.</li>
+      <li>El circuito entra <b>una sola vez</b> en cada región (zona de borde grueso) y sale de ella.</li>
+      <li>Un número dice cuántas casillas de su región recorre el circuito.</li>
+      <li>Dos casillas por las que no pasa el circuito no pueden tocarse por un lado si están en regiones distintas.</li></ol>
+      <ul><li><b>Arrastra</b> de casilla en casilla para dibujar; si empiezas sobre una línea, la borras.</li>
+      <li>Toca justo sobre el lado entre dos casillas: línea → ✕ → nada.</li></ul>`,
+    generate(n){
+      const N=n*n;
+      for(;;){
+        const b=build(n); if(!b)continue;
+        const num=b.num.slice();
+        let r=solve(b.reg,num,n,2,20000); if(r.aborted||r.sols.length!==1)continue;
+        const t0=performance.now();
+        for(const i of U.shuffle(U.range(N).filter(i=>b.first[i]===i))){
+          if(performance.now()-t0>2500)break;
+          const keep=num.slice(); for(let j=0;j<N;j++) if(b.reg[j]===b.reg[i]) num[j]=-1;
+          r=solve(b.reg,num,n,2,6000);
+          if(r.aborted||r.sols.length!==1) keep.forEach((x,j)=>num[j]=x);
+        }
+        return {reg:b.reg,num,sol:b.E};
+      }
+    },
+    init:(puz,n)=>new Array(2*n*(n-1)).fill(0),
+    solved(S){
+      const n=S.n, N=n*n, {reg,num}=S.puz, E=S.st.map(x=>x===1?1:0), L=LOOP.single(E,n); if(!L)return false;
+      const R=regionsOf(reg), gm=U.geometry(n);
+      for(const r in R){ const v=R[r].filter(i=>L.has(i)).length; if(!v)return false; const t=num[R[r][0]]; if(t>=0&&v!==t)return false;
+        let cr=0; for(let e=0;e<E.length;e++) if(E[e]){ const [a,b]=LOOP.ends(e,n); if((reg[a]==r)!==(reg[b]==r))cr++; } if(cr!==2)return false; }
+      for(let i=0;i<N;i++) if(!L.has(i)) for(const j of gm.nb[i]) if(!L.has(j)&&reg[i]!==reg[j])return false;
+      return true;
+    },
+    render(board,S,api,flash){
+      const n=S.n, N=n*n, {reg,num}=S.puz, st=S.st, CE=LOOP.cellE(n);
+      let h=`<svg viewBox="0 0 ${n} ${n}">`;
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      const R=regionsOf(reg);
+      for(const r in R){ const f=R[r][0], t=num[f]; if(t<0)continue;
+        const v=R[r].filter(i=>CE[i].some(e=>st[e]===1)).length;
+        h+=`<text class="rn${S.errs&&v>t?' e':v===t?' ok':''}" x="${f%n+.1}" y="${(f/n|0)+.27}">${t}</text>`; }
+      if(S.errs) for(let i=0;i<N;i++) if(CE[i].filter(e=>st[e]===1).length>2) h+=`<circle class="bad" cx="${i%n+.5}" cy="${(i/n|0)+.5}" r=".12"/>`;
+      h+=LOOP.drawEdges(st,n,0,flash);
+      for(let i=0;i<N;i++){ const r=i/n|0,c=i%n;
+        if(c<n-1&&reg[i]!==reg[i+1]) h+=`<line class="wl" x1="${c+1}" y1="${r}" x2="${c+1}" y2="${r+1}"/>`;
+        if(r<n-1&&reg[i]!==reg[i+n]) h+=`<line class="wl" x1="${c}" y1="${r+1}" x2="${c+1}" y2="${r+1}"/>`; }
+      h+=`<rect class="fr" x="0" y="0" width="${n}" height="${n}"/>`;
+      board.className='board ms cr';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'</svg>';
+      LOOP.bind(board,api,n,0,null);
+    },
+    hint(S){
+      const {sol}=S.puz, M=S.st.length;
+      const wrong=U.range(M).filter(e=>(S.st[e]===1&&!sol[e])||(S.st[e]===2&&sol[e]));
+      if(wrong.length){ const e=U.pick(wrong); const was=S.st[e]; S.st[e]=0; return {i:e,msg:was===1?'Por aquí no pasa el circuito':'Aquí sí pasa el circuito'}; }
+      const miss=U.range(M).filter(e=>sol[e]&&S.st[e]!==1);
+      if(!miss.length) return null;
+      const e=U.pick(miss); S.st[e]=1;
+      return {i:e,msg:'El circuito pasa por aquí'};
+    }
+  });
+})();
 
 /* ================== marco común: portada + partida ================== */
 const app=document.getElementById('app');
