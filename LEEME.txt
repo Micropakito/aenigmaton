@@ -18,8 +18,10 @@ CÓMO INSTALARLA EN ANDROID
 3. Aparecerá el icono "Aenigmaton" y se abrirá a pantalla completa, también sin conexión.
 
 ACTUALIZAR
-Sustituye index.html en el repositorio y, en sw.js, cambia VERSION (aenigmaton-v1 → aenigmaton-v2).
-La próxima vez que abras la app con conexión cogerá la versión nueva.
+Sustituye index.html en el repositorio y, en sw.js, sube VERSION (aenigmaton-v6 → aenigmaton-v7…).
+La app busca versiones nuevas al abrirse y cada vez que vuelve a primer plano; cuando encuentra una,
+muestra abajo el aviso «Hay una versión nueva · Toca para actualizar». GitHub Pages tarda 1-2 minutos
+en publicar cada cambio.
 
 NOTA: las partidas, récords e historial se guardan en el propio móvil, dentro de la app instalada.
 

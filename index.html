@@ -422,6 +422,7 @@ details ol,details ul{padding-left:1.2em;margin:.5em 0}
 .board.cr .rn{font-size:.26px;font-weight:800;fill:var(--ink);dominant-baseline:central}
 .board.cr .rn.ok{fill:var(--muted)} .board.cr .rn.e{fill:var(--err)}
 
+.updbar{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;background:var(--ink);color:var(--bg);border-radius:999px;padding:12px 18px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.25);white-space:nowrap}
 header.brand{flex-direction:column;align-items:flex-start;gap:0}
 header.brand h1{font-size:2rem;font-weight:900;letter-spacing:-.01em}
 header.brand span{color:var(--muted);font-size:.95rem;letter-spacing:.12em;text-transform:uppercase}
@@ -5877,8 +5878,26 @@ route();
 })();
 </script>
 <script>
+// Actualizaciones: busca versión nueva al abrir y cada vez que la app vuelve a primer plano.
+// Si la encuentra, muestra un aviso para recargar (la partida en curso se guarda antes).
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){
-  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(reg=>{
+      const check=()=>reg.update().catch(()=>{});
+      document.addEventListener('visibilitychange',()=>{ if(!document.hidden) check(); });
+      setInterval(check,30*60*1000);
+      check();
+    }).catch(()=>{});
+    let had=!!navigator.serviceWorker.controller, shown=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{
+      if(!had){had=true;return}           // primera instalación: no hace falta avisar
+      if(shown)return; shown=true;
+      const b=document.createElement('button');
+      b.className='updbar'; b.textContent='✨ Hay una versión nueva · Toca para actualizar';
+      b.onclick=()=>{ window.dispatchEvent(new Event('pagehide')); location.reload(); };
+      document.body.appendChild(b);
+    });
+  });
 }
 </script>
 </body>
