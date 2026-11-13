@@ -276,6 +276,61 @@ details ol,details ul{padding-left:1.2em;margin:.5em 0}
 .lic .dot{width:20%;height:20%;border-radius:50%;background:var(--muted)}
 .lic.h{animation:hint 1.3s ease}
 
+/* Sudoku, Nonomino, KenKen */
+.board.nm .fc{position:relative}
+.board.nm .fc .cg{position:absolute;left:5%;top:3%;font-size:calc(var(--B) / var(--n) * .2);font-weight:800;color:var(--ink);line-height:1;pointer-events:none}
+.board.nm.cc .fc .notes{padding:24% 6% 4%}
+.board.nm .fc .notes{font-size:calc(var(--B) / var(--n) * .19)}
+
+/* Shikaku */
+.board.sk{touch-action:none}
+.board.sk svg{width:100%;height:100%;display:block}
+.board.sk .bgd{fill:var(--card)}
+.board.sk .rc{fill:hsl(var(--h) 65% 84%)}
+@media (prefers-color-scheme:dark){.board.sk .rc{fill:hsl(var(--h) 30% 30%)}}
+.board.sk .rc.e{fill:color-mix(in srgb,var(--err) 45%,var(--card))}
+.board.sk .rc.h{fill:color-mix(in srgb,var(--hint) 60%,var(--card))}
+.board.sk .gl{stroke:var(--thin);stroke-width:.03}
+.board.sk .ro{fill:none;stroke:var(--ink);stroke-width:.07}
+.board.sk .fr{fill:none;stroke:var(--ink);stroke-width:.1}
+.board.sk .pv{fill:color-mix(in srgb,var(--user) 22%,transparent);stroke:var(--user);stroke-width:.07;stroke-dasharray:.15 .1}
+.board.sk .pa{font-size:.3px;fill:var(--user);font-weight:800;text-anchor:middle;dominant-baseline:central;opacity:.6}
+.board.sk .cl{font-size:.5px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.board.sk.won .rc{fill:color-mix(in srgb,var(--ok) 25%,var(--card))}
+
+/* Kuromasu */
+.board.km .hc.k{font-weight:800}
+.board.km .hc.k.ok{color:var(--muted)}
+.board.km .hc.k.e{color:var(--err)}
+
+/* Gokigen */
+.board.gk svg{width:100%;height:100%;display:block}
+.board.gk .bg{fill:var(--card);stroke:var(--ink);stroke-width:.05}
+.board.gk .gl{stroke:var(--line);stroke-width:.025}
+.board.gk .hl{fill:color-mix(in srgb,var(--hint) 45%,transparent)}
+.board.gk .sl{stroke:var(--user);stroke-width:.13;stroke-linecap:round}
+.board.gk .sl.e{stroke:var(--err)}
+.board.gk .vc{fill:var(--card);stroke:var(--ink);stroke-width:.04}
+.board.gk .vt{font-size:.34px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.board.gk .vc.ok{stroke:var(--muted)} .board.gk .vt.ok{fill:var(--muted);font-weight:500}
+.board.gk .vc.e{stroke:var(--err)} .board.gk .vt.e{fill:var(--err)}
+.board.gk.won .sl{stroke:var(--ok)}
+
+/* Slitherlink */
+.board.sl{background:var(--card);border-radius:12px;border:1px solid var(--line);touch-action:none}
+.board.sl svg{width:100%;height:100%;display:block}
+.board.sl .dt{fill:var(--ink)} .board.sl .dt.e{fill:var(--err)}
+.board.sl .ln{stroke:var(--user);stroke-width:.11;stroke-linecap:round}
+.board.sl .ln.h{stroke:var(--hint)}
+.board.sl .xx{stroke:var(--muted);stroke-width:.04;stroke-linecap:round}
+.board.sl .cl{font-size:.48px;font-weight:800;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.board.sl .cl.ok{fill:var(--muted);font-weight:500} .board.sl .cl.e{fill:var(--err)}
+.board.sl.won .ln{stroke:var(--ok)}
+
+/* Portada en dos listas */
+.sec{width:var(--B);margin:10px 0 -2px;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;gap:10px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line)}
+
 header.brand{flex-direction:column;align-items:flex-start;gap:0}
 header.brand h1{font-size:2rem;font-weight:900;letter-spacing:-.01em}
 header.brand span{color:var(--muted);font-size:.95rem;letter-spacing:.12em;text-transform:uppercase}
@@ -2970,6 +3025,912 @@ const register=g=>GAMES.push(g);
   });
 })();
 
+/* ================== utilidades de rellenar números (Sudoku, Nonomino, KenKen) ================== */
+const NUMS=(()=>{
+  const bits=m=>{let c=0;for(;m;m&=m-1)c++;return c};
+  const latinUnits=n=>{const u=[];for(let r=0;r<n;r++)u.push(U.range(n).map(c=>r*n+c));for(let c=0;c<n;c++)u.push(U.range(n).map(r=>r*n+c));return u};
+  const regUnits=reg=>{const m={};reg.forEach((r,i)=>(m[r]=m[r]||[]).push(i));return Object.values(m)};
+  const peersOf=(units,N)=>{const p=Array.from({length:N},()=>new Set());for(const u of units)for(const a of u)for(const b of u)if(a!==b)p[a].add(b);return p.map(s=>[...s])};
+  // búsqueda con la casilla de menos candidatos primero; extra(i,v) limita candidatos (jaulas)
+  function search(n,peers,given,limit,maxNodes,random,extra){
+    const N=n*n, full=((1<<(n+1))-1)&~1, v=Array.from(given,x=>x>0?x:0), sols=[]; let nodes=0,aborted=false;
+    const cand=i=>{let m=full;for(const j of peers[i]) if(v[j]) m&=~(1<<v[j]); if(extra) m&=extra(i,v); return m};
+    for(let i=0;i<N;i++) if(v[i]){const x=v[i];v[i]=0;const ok=cand(i)&(1<<x);v[i]=x;if(!ok)return {sols,aborted}}
+    (function rec(){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      let best=-1,bm=0,bc=99;
+      for(let i=0;i<N;i++) if(!v[i]){const m=cand(i);if(!m)return;const c=bits(m);if(c<bc){bc=c;bm=m;best=i;if(c===1)break}}
+      if(best<0){sols.push(v.slice());return}
+      const xs=[];for(let x=1;x<=n;x++)if(bm&(1<<x))xs.push(x);
+      if(random)U.shuffle(xs);
+      for(const x of xs){v[best]=x;rec();v[best]=0;if(sols.length>=limit||aborted)return}
+    })();
+    return {sols,aborted};
+  }
+  // ¿se resuelve solo con "únicos" (desnudos y ocultos)? → dificultad normal
+  function singles(n,units,peers,given){
+    const N=n*n, full=((1<<(n+1))-1)&~1, v=Array.from(given);
+    const cand=i=>{let m=full;for(const j of peers[i]) if(v[j]) m&=~(1<<v[j]);return m};
+    let prog=true;
+    while(prog){
+      prog=false;
+      for(let i=0;i<N;i++) if(!v[i]){const m=cand(i); if(!m)return false; if(bits(m)===1){v[i]=31-Math.clz32(m);prog=true}}
+      for(const u of units) for(let x=1;x<=n;x++){
+        let pos=-1,cnt=0,has=false;
+        for(const i of u){ if(v[i]===x){has=true;break} if(!v[i]&&(cand(i)&(1<<x))){cnt++;pos=i} }
+        if(!has&&cnt===1){v[pos]=x;prog=true}
+      }
+    }
+    return v.every(x=>x>0);
+  }
+  function reduce(sol,ok,ms){
+    const clue=sol.slice(), t0=performance.now();
+    for(const i of U.shuffle(U.range(sol.length))){
+      if(performance.now()-t0>ms)break;
+      const k=clue[i]; clue[i]=0;
+      if(!ok(clue)) clue[i]=k;
+    }
+    return clue;
+  }
+  function dupes(units,v){
+    const bad=new Set();
+    for(const u of units){const seen={};for(const i of u){const x=v[i];if(x>0){if(seen[x]!==undefined){bad.add(i);bad.add(seen[x])}else seen[x]=i}}}
+    return bad;
+  }
+  // interfaz común: tablero de números con regiones, etiquetas, notas y teclado
+  function ui(cfg){
+    let tool=1, notesMode=false;
+    return {
+      render(board,S,api,flash){
+        const n=S.n, N=n*n, v=S.st, reg=cfg.borders(S), clue=S.puz.clue, bad=S.errs?cfg.bad(S):new Set();
+        board.className='board fl nm'+(cfg.cls?' '+cfg.cls:'');
+        board.innerHTML='<div class="gen">Generando…</div>';
+        for(let i=0;i<N;i++){
+          const r=i/n|0,c=i%n, d=document.createElement('div'), lab=cfg.label?cfg.label(S,i):'';
+          d.dataset.i=i;
+          d.className='fc'+(clue[i]?' k':'')+(bad.has(i)?' e':'')+(flash===i?' h':'')+(tool&&v[i]===tool?' same':'')
+            +((c===n-1||reg[i]!==reg[i+1])?' r':'')+((r===n-1||reg[i]!==reg[i+n])?' b':'');
+          let h=lab?`<span class="cg">${lab}</span>`:'';
+          if(v[i]>0) h+=v[i];
+          else if(v[i]<0){ const m=-v[i]; h+='<div class="notes">'; for(let x=1;x<=n;x++) h+='<span>'+((m&(1<<x))?x:'')+'</span>'; h+='</div>'; }
+          d.innerHTML=h;
+          board.appendChild(d);
+        }
+        board.onpointerdown=null; board.onpointermove=null; board.onpointerup=null;
+        board.onclick=e=>{
+          const el=e.target.closest('.fc'); if(!el)return;
+          const S2=api.S, i=+el.dataset.i;
+          if(S2.won||S2.puz.clue[i])return;
+          api.pushUndo();
+          const st=S2.st;
+          if(tool===0) st[i]=0;
+          else if(notesMode){ const m=st[i]<0?-st[i]:0; if(st[i]>0) st[i]=-(1<<tool); else { const nm=m^(1<<tool); st[i]=nm?-nm:0; } }
+          else if(st[i]===tool) st[i]=0;
+          else { st[i]=tool; for(const j of cfg.peers(S2)[i]) if(st[j]<0){ const nm=(-st[j])&~(1<<tool); st[j]=nm?-nm:0; } }
+          api.commit();
+        };
+      },
+      renderExtra(el,S,api){
+        const k=S.n; if(tool>k) tool=k;
+        el.innerHTML='';
+        const pad=document.createElement('div'); pad.className='pad su'; pad.style.setProperty('--k',k+2);
+        for(const x of [...U.range(k).map(t=>t+1),0]){
+          const b=document.createElement('button'); b.textContent=x||'⌫';
+          if(x===tool)b.className='on';
+          b.onclick=()=>{tool=x;api.draw();};
+          pad.appendChild(b);
+        }
+        const nb=document.createElement('button'); nb.textContent='✎'; nb.title='Notas';
+        if(notesMode) nb.className='notes-on';
+        nb.onclick=()=>{notesMode=!notesMode;api.draw();};
+        pad.appendChild(nb);
+        el.appendChild(pad);
+      },
+      hint(S){
+        const sol=S.puz.sol, N=S.n*S.n;
+        const wrong=U.range(N).filter(i=>S.st[i]>0&&S.st[i]!==sol[i]);
+        if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla estaba mal'}; }
+        const open=U.range(N).filter(i=>S.st[i]<=0);
+        if(!open.length) return null;
+        const i=U.pick(open); S.st[i]=sol[i];
+        return {i,msg:'Aquí va un '+sol[i]};
+      }
+    };
+  }
+  return {bits,latinUnits,regUnits,peersOf,search,singles,reduce,dupes,ui};
+})();
+
+/* ================== SUDOKU ================== */
+(()=>{
+  const box=n=>n===4?[2,2]:n===6?[2,3]:[3,3];
+  const cache={};
+  const geo=n=>cache[n]||(cache[n]=(()=>{
+    const [bh,bw]=box(n), reg=U.range(n*n).map(i=>((i/n|0)/bh|0)*(n/bw)+((i%n)/bw|0));
+    const units=[...NUMS.latinUnits(n),...NUMS.regUnits(reg)];
+    return {reg,units,peers:NUMS.peersOf(units,n*n)};
+  })());
+  const ui=NUMS.ui({borders:S=>geo(S.n).reg, bad:S=>NUMS.dupes(geo(S.n).units,S.st), peers:S=>geo(S.n).peers});
+  register({
+    id:'sudoku', name:'Sudoku', jp:true,
+    desc:'El clásico: cada fila, columna y caja lleva todos los números sin repetir.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M4 24.7H64M4 44.3H64M24.7 4V64M44.3 4V64" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="11" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="14" y="18">5</text><text x="54" y="18">3</text><text x="34" y="38">7</text><text x="14" y="58">9</text><text x="54" y="58">1</text></g>
+      <g font-size="11" font-weight="500" text-anchor="middle" fill="var(--user)"><text x="34" y="18">8</text><text x="54" y="38">2</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    modes:[{id:'n',label:'Normal',short:'Normal',sizes:[4,6,9],defaultSize:9},{id:'x',label:'Experto',short:'Experto',sizes:[6,9],defaultSize:9}],
+    rules:`<ol>
+      <li>Rellena cada casilla con un número del 1 al N (N es el tamaño del tablero).</li>
+      <li>Ningún número puede repetirse en una <b>fila</b>, en una <b>columna</b> ni en una <b>caja</b> (los bloques de borde grueso).</li></ol>
+      <ul><li>Elige un número abajo y toca una casilla. Tocarla con el mismo número la borra; ⌫ es la goma.</li>
+      <li>✎ activa las <b>notas</b>. Al colocar un número se borran solas esas notas en su fila, columna y caja.</li>
+      <li><b>Normal</b> se resuelve buscando casillas con un solo candidato; <b>Experto</b> puede exigir técnicas más finas.</li></ul>`,
+    generate(n,mode){
+      const g=geo(n);
+      const sol=NUMS.search(n,g.peers,new Array(n*n).fill(0),1,1e6,true).sols[0];
+      const clue=NUMS.reduce(sol,c=>{
+        if(mode!=='x') return NUMS.singles(n,g.units,g.peers,c);
+        const r=NUMS.search(n,g.peers,c,2,30000,false); return !r.aborted&&r.sols.length===1;
+      },3000);
+      return {clue,sol};
+    },
+    init:(puz)=>puz.clue.slice(),
+    solved(S){ return S.st.every(x=>x>0)&&NUMS.dupes(geo(S.n).units,S.st).size===0; },
+    render:ui.render, renderExtra:ui.renderExtra, hint:ui.hint
+  });
+})();
+
+/* ================== NONOMINO (sudoku de piezas) ================== */
+(()=>{
+  function jigsaw(n){
+    const N=n*n, gm=U.geometry(n), reg=U.range(N).map(i=>i/n|0);
+    const conn=R=>{ let s=-1,tot=0; for(let i=0;i<N;i++) if(reg[i]===R){tot++; if(s<0)s=i;}
+      const seen=new Uint8Array(N),q=[s]; seen[s]=1; let k=1;
+      while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(reg[b]===R&&!seen[b]){seen[b]=1;k++;q.push(b)}}
+      return k===tot; };
+    for(let it=0;it<N*60;it++){
+      const a=Math.random()*N|0, ob=gm.nb[a].filter(b=>reg[b]!==reg[a]); if(!ob.length)continue;
+      const A=reg[a], B=reg[U.pick(ob)];
+      reg[a]=B;
+      const cs=[]; for(let c=0;c<N;c++) if(reg[c]===B&&c!==a&&gm.nb[c].some(j=>reg[j]===A)) cs.push(c);
+      if(!cs.length){reg[a]=A;continue}
+      const c=U.pick(cs); reg[c]=A;
+      if(!conn(A)||!conn(B)){reg[c]=B;reg[a]=A}
+    }
+    // que no quede ninguna pieza que sea una fila o columna entera
+    const units=NUMS.regUnits(reg);
+    if(units.some(u=>u.every(i=>(i/n|0)===(u[0]/n|0))||u.every(i=>i%n===u[0]%n))) return null;
+    return reg;
+  }
+  const cache={};
+  const geo=reg=>{ const k=reg.join(''); if(cache[k])return cache[k]; const n=Math.round(Math.sqrt(reg.length));
+    const units=[...NUMS.latinUnits(n),...NUMS.regUnits(reg)]; return cache[k]={units,peers:NUMS.peersOf(units,n*n)}; };
+  const ui=NUMS.ui({borders:S=>S.puz.reg, bad:S=>NUMS.dupes(geo(S.puz.reg).units,S.st), peers:S=>geo(S.puz.reg).peers});
+  register({
+    id:'nonomino', name:'Nonomino',
+    desc:'Un sudoku sin cajas cuadradas: las piezas tienen formas irregulares.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M4 24H24V44H44V64 M44 4V24H64 M4 44H24 M44 44H64" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="11" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="14" y="18">3</text><text x="54" y="38">1</text><text x="34" y="58">2</text></g>
+      <g font-size="11" font-weight="500" text-anchor="middle" fill="var(--user)"><text x="34" y="38">4</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    modes:[{id:'n',label:'Normal',short:'Normal',sizes:[5,6,7,8,9],defaultSize:9},{id:'x',label:'Experto',short:'Experto',sizes:[6,7,8,9],defaultSize:9}],
+    rules:`<ol>
+      <li>Rellena cada casilla con un número del 1 al N.</li>
+      <li>Ningún número puede repetirse en una <b>fila</b>, en una <b>columna</b> ni en una <b>pieza</b> (las zonas de borde grueso, todas de N casillas).</li></ol>
+      <ul><li>Elige un número abajo y toca una casilla. Tocarla con el mismo número la borra; ⌫ es la goma.</li>
+      <li>✎ activa las <b>notas</b>. Al colocar un número se borran solas esas notas en su fila, columna y pieza.</li></ul>`,
+    generate(n,mode){
+      for(;;){
+        const reg=jigsaw(n); if(!reg)continue;
+        const g=geo(reg), r=NUMS.search(n,g.peers,new Array(n*n).fill(0),1,60000,true);
+        if(!r.sols.length)continue;
+        const sol=r.sols[0];
+        const clue=NUMS.reduce(sol,c=>{
+          if(mode!=='x') return NUMS.singles(n,g.units,g.peers,c);
+          const q=NUMS.search(n,g.peers,c,2,30000,false); return !q.aborted&&q.sols.length===1;
+        },3000);
+        return {reg,clue,sol};
+      }
+    },
+    init:(puz)=>puz.clue.slice(),
+    solved(S){ return S.st.every(x=>x>0)&&NUMS.dupes(geo(S.puz.reg).units,S.st).size===0; },
+    render:ui.render, renderExtra:ui.renderExtra, hint:ui.hint
+  });
+})();
+
+/* ================== KENKEN (CALCUDOKU) ================== */
+(()=>{
+  const OPS={'+':a=>a.reduce((x,y)=>x+y,0),'×':a=>a.reduce((x,y)=>x*y,1),'−':a=>Math.abs(a[0]-a[1]),'÷':a=>Math.max(...a)/Math.min(...a)};
+  function pickOp(vals){
+    const k=vals.length; if(k===1) return {op:'',t:vals[0]};
+    if(k===2){ const hi=Math.max(...vals), lo=Math.min(...vals), r=Math.random();
+      if(hi%lo===0&&lo>1&&r<0.5) return {op:'÷',t:hi/lo};
+      if(r<0.65) return {op:'−',t:hi-lo}; }
+    const op=Math.random()<0.55?'+':'×'; return {op,t:OPS[op](vals)};
+  }
+  function cages(n){
+    const N=n*n, gm=U.geometry(n), cg=new Array(N).fill(-1); let id=0, left=N;
+    const free=i=>gm.nb[i].reduce((a,j)=>a+(cg[j]<0),0);
+    while(left){
+      let best=[],bf=9;
+      for(let i=0;i<N;i++) if(cg[i]<0){const f=free(i);if(f<bf){bf=f;best=[i]}else if(f===bf)best.push(i)}
+      const s=U.pick(best), r=Math.random(), target=r<0.06?1:r<0.5?2:r<0.85?3:4, cells=[s]; cg[s]=id;
+      while(cells.length<target){ const f=[]; for(const c of cells) for(const j of gm.nb[c]) if(cg[j]<0&&!f.includes(j)) f.push(j); if(!f.length)break; const j=U.pick(f); cg[j]=id; cells.push(j); }
+      left-=cells.length; id++;
+    }
+    return cg;
+  }
+  function tuples(cells,n,op,t){
+    const k=cells.length, out=[], v=new Array(k), rc=cells.map(i=>[i/n|0,i%n]);
+    (function rec(p,acc){
+      if(p===k){ if(op===''?v[0]===t:OPS[op](v)===t) out.push(v.slice()); return; }
+      for(let x=1;x<=n;x++){
+        let ok=true; for(let q=0;q<p;q++) if(v[q]===x&&(rc[q][0]===rc[p][0]||rc[q][1]===rc[p][1])){ok=false;break}
+        if(!ok)continue;
+        if(op==='+'&&acc+x>t)break;
+        if(op==='×'&&t%(acc*x))continue;
+        v[p]=x; rec(p+1,op==='+'?acc+x:op==='×'?acc*x:0);
+      }
+    })(0,op==='×'?1:0);
+    return out;
+  }
+  function model(puz,n){
+    const cells={}; puz.cg.forEach((c,i)=>(cells[c]=cells[c]||[]).push(i));
+    const tup={}, pos=new Array(n*n);
+    for(const c in cells){ tup[c]=tuples(cells[c],n,puz.ops[c].op,puz.ops[c].t); cells[c].forEach((i,q)=>pos[i]=q); }
+    return {cells,tup,pos};
+  }
+  function solve(puz,n,given,limit,maxNodes,random){
+    const M=model(puz,n), peers=NUMS.peersOf(NUMS.latinUnits(n),n*n);
+    const extra=(i,v)=>{
+      const c=puz.cg[i], cs=M.cells[c], p=M.pos[i]; let m=0;
+      for(const t of M.tup[c]){ let ok=true; for(let q=0;q<cs.length;q++){ const x=v[cs[q]]; if(x&&t[q]!==x){ok=false;break} } if(ok) m|=1<<t[p]; }
+      return m;
+    };
+    return NUMS.search(n,peers,given,limit,maxNodes,random,extra);
+  }
+  function generate(n){
+    const N=n*n, gm=U.geometry(n), peers=NUMS.peersOf(NUMS.latinUnits(n),N);
+    const sol=NUMS.search(n,peers,new Array(N).fill(0),1,1e6,true).sols[0];
+    let cg=cages(n), ops={};
+    const opFor=c=>{ ops[c]=pickOp(U.range(N).filter(i=>cg[i]===c).map(i=>sol[i])); };
+    [...new Set(cg)].forEach(opFor);
+    for(let tries=0;tries<400;tries++){
+      const puz={cg,ops};
+      const r=solve(puz,n,new Array(N).fill(0),2,40000,false);
+      if(r.aborted){ cg=cages(n); ops={}; [...new Set(cg)].forEach(opFor); continue; }
+      if(r.sols.length===1) break;
+      // reparación: separa una casilla en la que difieren las soluciones
+      const alt=r.sols.find(s=>s.some((x,i)=>x!==sol[i]));
+      const d=U.pick(U.range(N).filter(i=>alt[i]!==sol[i])), old=cg[d];
+      let next=Math.max(...cg)+1;
+      cg=cg.slice(); cg[d]=next++; opFor(cg[d]);
+      const rest=U.range(N).filter(i=>cg[i]===old), seen=new Set();
+      const ids=[];
+      for(const s of rest){ if(seen.has(s))continue;
+        const comp=[s],q=[s]; seen.add(s);
+        while(q.length){const a=q.pop(); for(const b of gm.nb[a]) if(cg[b]===old&&!seen.has(b)){seen.add(b);comp.push(b);q.push(b)}}
+        const id=ids.length?next++:old; ids.push(id); comp.forEach(i=>cg[i]=id);
+      }
+      ids.forEach(opFor);
+      for(const k in ops) if(!cg.includes(+k)) delete ops[k];
+    }
+    // números de las jaulas de una sola casilla ya vienen puestos
+    const clue=U.range(N).map(i=>ops[cg[i]].op===''?sol[i]:0);
+    return {cg,ops,clue,sol};
+  }
+  function bad(S){
+    const n=S.n, v=S.st, b=NUMS.dupes(NUMS.latinUnits(n),v), M={};
+    S.puz.cg.forEach((c,i)=>(M[c]=M[c]||[]).push(i));
+    for(const c in M){ const cs=M[c]; if(cs.some(i=>!(v[i]>0)))continue; const {op,t}=S.puz.ops[c];
+      if((op===''?v[cs[0]]:OPS[op](cs.map(i=>v[i])))!==t) cs.forEach(i=>b.add(i)); }
+    return b;
+  }
+  const peerCache={};
+  const ui=NUMS.ui({cls:'cc', borders:S=>S.puz.cg, bad,
+    peers:S=>peerCache[S.n]||(peerCache[S.n]=NUMS.peersOf(NUMS.latinUnits(S.n),S.n*S.n)),
+    label(S,i){ const c=S.puz.cg[i]; if(S.puz.cg.indexOf(c)!==i) return ''; const {op,t}=S.puz.ops[c]; return t+op; }});
+  register({
+    id:'kenken', name:'KenKen', jp:true,
+    desc:'Sin repetir en filas ni columnas, y cada jaula da su resultado con la operación indicada.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M4 34H34V4 M34 34V64 M34 49H64" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <g font-size="8" font-weight="800" fill="var(--ink)"><text x="7" y="13">6×</text><text x="37" y="13">7+</text><text x="7" y="43">2÷</text><text x="37" y="43">1−</text></g>
+      <g font-size="12" font-weight="500" text-anchor="middle" fill="var(--user)"><text x="19" y="26">3</text><text x="49" y="28">4</text><text x="19" y="56">2</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="var(--ink)" stroke-width="2.5"/></svg>`,
+    sizes:[4,5,6,7], defaultSize:5,
+    rules:`<ol>
+      <li>Rellena cada casilla con un número del 1 al N, sin repetir en ninguna <b>fila</b> ni <b>columna</b>.</li>
+      <li>Las <b>jaulas</b> (bordes gruesos) llevan un resultado y una operación: sus números deben dar ese resultado.
+        Con − y ÷ (siempre de dos casillas) se resta o divide el mayor entre el menor.</li>
+      <li>Dentro de una jaula sí puede repetirse un número, siempre que no sea en la misma fila o columna.</li>
+      <li>Las jaulas de una sola casilla ya vienen resueltas.</li></ol>
+      <ul><li>Elige un número abajo y toca una casilla. Tocarla con el mismo número la borra; ⌫ es la goma.</li>
+      <li>✎ activa las <b>notas</b>.</li></ul>`,
+    generate,
+    init:(puz)=>puz.clue.slice(),
+    solved(S){ return S.st.every(x=>x>0)&&bad(S).size===0; },
+    render:ui.render, renderExtra:ui.renderExtra, hint:ui.hint
+  });
+})();
+
+/* ================== SHIKAKU ================== */
+(()=>{
+  const enc=(r,c,h,w,n)=>((r*n+c)*n+(h-1))*n+(w-1)+1;
+  const dec=(code,n)=>{let x=code-1;const w=x%n+1;x=x/n|0;const h=x%n+1;x=x/n|0;return {r:x/n|0,c:x%n,h,w}};
+  const cellsOf=({r,c,h,w},n)=>{const o=[];for(let y=r;y<r+h;y++)for(let x=c;x<c+w;x++)o.push(y*n+x);return o};
+  function partition(n){
+    const N=n*n, cov=new Int32Array(N).fill(-1), rects=[], maxA=n<=6?8:n<=8?10:12;
+    for(let i=0;i<N;i++){
+      if(cov[i]>=0)continue;
+      const r=i/n|0,c=i%n, opts=[];
+      let wMax=0; while(c+wMax<n&&cov[r*n+c+wMax]<0)wMax++;
+      for(let w=1;w<=wMax;w++) for(let h=1;r+h<=n;h++){
+        let ok=true; for(let x=0;x<w;x++) if(cov[(r+h-1)*n+c+x]>=0){ok=false;break}
+        if(!ok||w*h>maxA)break;
+        const a=w*h; opts.push({r,c,w,h,wt:a===1?0.12:a===2?0.5:(Math.max(w,h)>5?0.4:1)});
+      }
+      let x=Math.random()*opts.reduce((s,o)=>s+o.wt,0), o=opts[0];
+      for(const p of opts){x-=p.wt;if(x<=0){o=p;break}}
+      cellsOf(o,n).forEach(j=>cov[j]=rects.length); rects.push({r:o.r,c:o.c,w:o.w,h:o.h});
+    }
+    return rects;
+  }
+  function solve(clues,n,limit,maxNodes){
+    const N=n*n, ks=[], opts=[];
+    for(let i=0;i<N;i++) if(clues[i]){
+      const a=clues[i], r0=i/n|0, c0=i%n, L=[];
+      for(let w=1;w<=a;w++){ if(a%w)continue; const h=a/w; if(w>n||h>n)continue;
+        for(let r=Math.max(0,r0-h+1);r<=Math.min(r0,n-h);r++) for(let c=Math.max(0,c0-w+1);c<=Math.min(c0,n-w);c++){
+          const R={r,c,w,h}, cs=cellsOf(R,n);
+          if(cs.some(j=>j!==i&&clues[j]))continue;
+          R.cells=cs; L.push(R);
+        } }
+      ks.push(i); opts.push(L);
+    }
+    const cov=new Uint8Array(N), chosen=new Array(ks.length).fill(null), sols=[]; let nodes=0, aborted=false;
+    const reach=new Uint8Array(N);
+    (function rec(left){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!left){ sols.push(chosen.map(o=>({r:o.r,c:o.c,w:o.w,h:o.h}))); return; }
+      reach.fill(0);
+      let bk=-1,bl=null;
+      for(let k=0;k<ks.length;k++){ if(chosen[k])continue;
+        const L=opts[k].filter(o=>o.cells.every(j=>!cov[j]));
+        if(!L.length)return;
+        for(const o of L) for(const j of o.cells) reach[j]=1;
+        if(!bl||L.length<bl.length){bk=k;bl=L} }
+      for(let j=0;j<N;j++) if(!cov[j]&&!reach[j]) return;
+      for(const o of bl){ o.cells.forEach(j=>cov[j]=1); chosen[bk]=o; rec(left-1); chosen[bk]=null; o.cells.forEach(j=>cov[j]=0); if(sols.length>=limit||aborted)return; }
+    })(ks.length);
+    return {sols,aborted};
+  }
+  function generate(n){
+    const N=n*n;
+    for(;;){
+      const rects=partition(n);
+      for(let t=0;t<8;t++){
+        const clues=new Array(N).fill(0);
+        for(const R of rects) clues[U.pick(cellsOf(R,n))]=R.w*R.h;
+        const r=solve(clues,n,2,20000);
+        if(!r.aborted&&r.sols.length===1) return {clues,sol:rects.map(R=>enc(R.r,R.c,R.h,R.w,n))};
+      }
+    }
+  }
+  function groups(S){ const G={}; S.st.forEach((x,i)=>{ if(x)(G[x]=G[x]||[]).push(i); }); return G; }
+  function okRect(S,code,cs){ const cl=cs.filter(i=>S.puz.clues[i]); return cl.length===1&&S.puz.clues[cl[0]]===cs.length; }
+  function place(st,R,n){
+    const cs=cellsOf(R,n), kill=new Set(cs.map(i=>st[i]).filter(x=>x));
+    for(let i=0;i<st.length;i++) if(kill.has(st[i])) st[i]=0;
+    const code=enc(R.r,R.c,R.h,R.w,n); cs.forEach(i=>st[i]=code);
+  }
+  let drag=null;
+  register({
+    id:'shikaku', name:'Shikaku', jp:true,
+    desc:'Divide la cuadrícula en rectángulos: cada uno con un número igual a su área.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <rect x="4" y="4" width="40" height="20" fill="hsl(30 70% 82%)"/><rect x="44" y="4" width="20" height="40" fill="hsl(200 60% 82%)"/>
+      <rect x="4" y="24" width="20" height="40" fill="hsl(140 45% 80%)"/><rect x="24" y="24" width="20" height="20" fill="hsl(280 45% 85%)"/><rect x="24" y="44" width="40" height="20" fill="hsl(50 70% 80%)"/>
+      <path d="M4 24H44 M44 4V44 M24 24V64 M24 44H64 M44 24 M24 24" stroke="#2b2620" stroke-width="2.5" fill="none"/>
+      <g font-size="11" font-weight="800" text-anchor="middle" fill="#2b2620"><text x="14" y="18">2</text><text x="54" y="38">2</text><text x="14" y="58">2</text><text x="34" y="38">1</text><text x="54" y="58">2</text></g>
+      <rect x="4" y="4" width="60" height="60" fill="none" stroke="#2b2620" stroke-width="2.5"/></svg>`,
+    sizes:[5,6,7,8,10], defaultSize:7,
+    rules:`<ol>
+      <li>Divide toda la cuadrícula en <b>rectángulos</b> (o cuadrados) siguiendo las líneas.</li>
+      <li>Cada rectángulo contiene <b>exactamente un número</b>, y ese número es su área: un 6 puede ser de 1×6, 2×3, 3×2 o 6×1.</li></ol>
+      <ul><li><b>Arrastra</b> de una esquina a la opuesta para dibujar un rectángulo. Si pisa otros, los sustituye.</li>
+      <li>Toca un rectángulo para borrarlo. Tocar una casilla vacía crea un rectángulo de 1×1.</li>
+      <li>Truco: empieza por los números grandes pegados al borde, que tienen pocas formas posibles.</li></ul>`,
+    generate,
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      if(S.st.some(x=>!x))return false;
+      const G=groups(S); return Object.keys(G).every(k=>okRect(S,+k,G[k]));
+    },
+    render(board,S,api,flash){
+      const n=S.n, st=S.st, {clues}=S.puz, G=groups(S);
+      let h=`<svg viewBox="0 0 ${n} ${n}"><rect class="bgd" x="0" y="0" width="${n}" height="${n}"/>`;
+      const codes=Object.keys(G).map(Number);
+      for(const code of codes){
+        const R=dec(code,n), ok=okRect(S,code,G[code]);
+        const hue=(R.r*7+R.c*13)*29%360;
+        h+=`<rect class="rc${S.errs&&!ok?' e':''}${flash===code?' h':''}" style="--h:${hue}" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/>`;
+      }
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      for(const code of codes){ const R=dec(code,n); h+=`<rect class="ro" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/>`; }
+      if(drag&&drag.b>=0){ const R=drag.rect(n); h+=`<rect class="pv" x="${R.c}" y="${R.r}" width="${R.w}" height="${R.h}"/><text class="pa" x="${R.c+R.w/2}" y="${R.r+R.h/2}">${R.w*R.h}</text>`; }
+      for(let i=0;i<n*n;i++) if(clues[i]) h+=`<text class="cl" x="${i%n+.5}" y="${(i/n|0)+.5}">${clues[i]}</text>`;
+      board.className='board sk';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'<rect class="fr" x="0" y="0" width="'+n+'" height="'+n+'"/></svg>';
+      const cellAt=e=>{const r=board.getBoundingClientRect();const x=Math.floor((e.clientX-r.left)/r.width*n),y=Math.floor((e.clientY-r.top)/r.height*n);return [Math.max(0,Math.min(n-1,y)),Math.max(0,Math.min(n-1,x))]};
+      board.onclick=null;
+      board.onpointerdown=e=>{
+        const S2=api.S; if(!S2||S2.won)return;
+        e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+        const [r,c]=cellAt(e);
+        drag={a:[r,c],b:-1,cur:[r,c],rect(n){const [r1,c1]=this.a,[r2,c2]=this.cur;return {r:Math.min(r1,r2),c:Math.min(c1,c2),h:Math.abs(r1-r2)+1,w:Math.abs(c1-c2)+1}}};
+      };
+      board.onpointermove=e=>{
+        if(!drag)return; const [r,c]=cellAt(e);
+        if(r===drag.cur[0]&&c===drag.cur[1])return;
+        drag.cur=[r,c]; drag.b=1; api.draw();
+      };
+      board.onpointerup=board.onpointercancel=e=>{
+        if(!drag)return; const g=drag; drag=null; const S2=api.S;
+        if(e.type==='pointercancel'){api.draw();return}
+        const R=g.rect(n), i=g.a[0]*n+g.a[1];
+        api.pushUndo();
+        if(R.w===1&&R.h===1&&S2.st[i]){ const code=S2.st[i]; for(let j=0;j<S2.st.length;j++) if(S2.st[j]===code) S2.st[j]=0; }
+        else place(S2.st,R,n);
+        api.commit();
+      };
+    },
+    hint(S){
+      const n=S.n, sol=S.puz.sol, G=groups(S);
+      const wrong=Object.keys(G).map(Number).filter(c=>!sol.includes(c));
+      if(wrong.length){ const c=U.pick(wrong); S.st.forEach((x,i)=>{if(x===c)S.st[i]=0}); return {i:-1,msg:'Ese rectángulo no era correcto'}; }
+      const miss=sol.filter(c=>!G[c]||G[c].length!==cellsOf(dec(c,n),n).length);
+      if(!miss.length) return null;
+      const c=U.pick(miss); place(S.st,dec(c,n),n);
+      return {i:c,msg:'Aquí va un rectángulo de '+dec(c,n).h+'×'+dec(c,n).w};
+    }
+  });
+})();
+
+/* ================== KUROMASU (KURODOKO) ================== */
+(()=>{
+  const D4=[[0,1],[1,0],[0,-1],[-1,0]];
+  const rayCache={};
+  const rays=n=>rayCache[n]||(rayCache[n]=U.range(n*n).map(i=>D4.map(([dr,dc])=>{const o=[];let r=(i/n|0)+dr,c=i%n+dc;while(r>=0&&c>=0&&r<n&&c<n){o.push(r*n+c);r+=dr;c+=dc}return o})));
+  const sees=(n,white,i)=>1+rays(n)[i].reduce((a,ray)=>{let k=0;while(k<ray.length&&white(ray[k]))k++;return a+k},0);
+  function build(n){
+    const gm=U.geometry(n), sh=new Array(gm.N).fill(false);
+    const target=Math.round(gm.N*(0.2+Math.random()*0.07)); let k=0;
+    for(const i of U.shuffle(U.range(gm.N))){
+      if(k>=target)break;
+      if(gm.nb[i].some(j=>sh[j]))continue;
+      sh[i]=true;
+      if(!U.connected(j=>sh[j],gm)){sh[i]=false;continue;}
+      k++;
+    }
+    return sh;
+  }
+  function solve(clue,n,limit,maxNodes){
+    const gm=U.geometry(n), N=gm.N, R=rays(n), cl=U.range(N).filter(i=>clue[i]), sols=[]; let nodes=0,aborted=false;
+    const onRay=new Uint8Array(N); for(const i of cl) for(const ray of R[i]) for(const j of ray) onRay[j]=1;
+    function prop(st){
+      let ch=true;
+      while(ch){
+        ch=false;
+        for(let i=0;i<N;i++) if(st[i]===2) for(const j of gm.nb[i]){ if(st[j]===2)return false; if(!st[j]){st[j]=1;ch=true} }
+        for(const i of cl){
+          const t=clue[i]; let mn=1,mx=1; const info=[];
+          for(const ray of R[i]){ let a=0; while(a<ray.length&&st[ray[a]]===1)a++; let b=a; while(b<ray.length&&st[ray[b]]!==2)b++; mn+=a; mx+=b; info.push([a,b]); }
+          if(mn>t||mx<t) return false;
+          for(let d=0;d<4;d++){
+            const ray=R[i][d], [a,b]=info[d];
+            if(a>=ray.length||st[ray[a]]) continue;  // no hay desconocida al final del tramo blanco
+            if(mx===t){ for(let q=a;q<b;q++) if(!st[ray[q]]){st[ray[q]]=1;ch=true} }
+            else if(mn===t){ st[ray[a]]=2; ch=true; }
+            else if(mx-(b-a)<t){ st[ray[a]]=1; ch=true; }
+          }
+        }
+      }
+      return U.connected(j=>st[j]===2,gm);
+    }
+    (function rec(st){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(st))return;
+      let i=-1; for(let j=0;j<N;j++) if(!st[j]&&onRay[j]){i=j;break}
+      if(i<0) i=st.indexOf(0);
+      if(i<0){ for(const c of cl) if(sees(n,j=>st[j]!==2,c)!==clue[c]) return; sols.push(Array.from(st)); return; }
+      for(const v of [2,1]){ const s=st.slice(); s[i]=v; rec(s); if(sols.length>=limit||aborted)return; }
+    })(Int8Array.from(clue,x=>x?1:0));
+    return {sols,aborted};
+  }
+  function check(S){
+    const n=S.n, gm=U.geometry(n), st=S.st, {clue}=S.puz, R=rays(n), bad=new Set(), ok=new Set();
+    for(let i=0;i<gm.N;i++) if(st[i]===1) for(const j of gm.nb[i]) if(st[j]===1){bad.add(i);bad.add(j)}
+    for(let i=0;i<gm.N;i++) if(clue[i]){
+      let mn=1,mx=1;
+      for(const ray of R[i]){ let a=0; while(a<ray.length&&st[ray[a]]===2||a<ray.length&&clue[ray[a]])a++; let b=0; while(b<ray.length&&st[ray[b]]!==1)b++; mn+=a; mx+=b; }
+      if(mn>clue[i]||mx<clue[i]) bad.add(i); else if(mn===clue[i]&&mx===clue[i]) ok.add(i);
+    }
+    return {bad,ok};
+  }
+  register({
+    id:'kuromasu', name:'Kuromasu', jp:true,
+    desc:'Ennegrece casillas para que cada número vea exactamente esas casillas blancas en línea recta.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--line)"/>${[0,1,2].map(r=>[0,1,2].map(c=>{const s=(r===0&&c===2)||(r===2&&c===0);const t={'0,0':'4','1,1':'5','2,2':'3'}[r+','+c]||'';return `<rect x="${4+c*21}" y="${4+r*21}" width="18" height="18" rx="3" fill="${s?'var(--shade)':'var(--card)'}"/>${t?`<text x="${13+c*21}" y="${18+r*21}" font-size="12" font-weight="800" text-anchor="middle" fill="var(--ink)">${t}</text>`:''}`}).join('')).join('')}</svg>`,
+    sizes:[5,6,7,8,9], defaultSize:7,
+    rules:`<ol>
+      <li>Pinta de negro algunas casillas. Las casillas con número son siempre blancas.</li>
+      <li>Cada número dice cuántas casillas blancas <b>ve</b> en horizontal y vertical, <b>contándose a sí misma</b>. La vista se corta en la primera casilla negra o en el borde.</li>
+      <li>Dos casillas negras no pueden tocarse por un lado.</li>
+      <li>Todas las casillas blancas deben formar un único bloque conectado.</li></ol>
+      <ul><li>Toca una casilla: <b>negra</b> → <b>círculo</b> (seguro que es blanca) → vacía.</li>
+      <li>Los números ya cumplidos se atenúan.</li>
+      <li>Truco: si un número es tan grande como todo lo que puede ver, todas esas casillas son blancas.</li></ul>`,
+    generate(n){
+      for(;;){
+        const sh=build(n), N=n*n, sol=sh.map(x=>x?2:1);
+        const clue=U.range(N).map(i=>sh[i]?0:sees(n,j=>!sh[j],i));
+        const t0=performance.now();
+        for(const i of U.shuffle(U.range(N).filter(i=>clue[i]))){
+          if(performance.now()-t0>3000)break;
+          const k=clue[i]; clue[i]=0;
+          const r=solve(clue,n,2,4000);
+          if(r.aborted||r.sols.length!==1) clue[i]=k;
+        }
+        const r=solve(clue,n,2,20000);
+        if(!r.aborted&&r.sols.length===1) return {clue,sol};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),   // 0 vacía, 1 negra, 2 círculo
+    solved(S){
+      const n=S.n, gm=U.geometry(n), bl=i=>S.st[i]===1&&!S.puz.clue[i];
+      for(let i=0;i<gm.N;i++) if(bl(i)&&gm.nb[i].some(bl)) return false;
+      if(!U.connected(bl,gm)) return false;
+      for(let i=0;i<gm.N;i++) if(S.puz.clue[i]&&sees(n,j=>!bl(j),i)!==S.puz.clue[i]) return false;
+      return true;
+    },
+    render(board,S,api,flash){
+      const gm=U.geometry(S.n), {clue}=S.puz, A=check(S);
+      board.className='board hi km';
+      board.innerHTML='<div class="gen">Generando…</div>';
+      for(let i=0;i<gm.N;i++){
+        const c=document.createElement('button'), st=S.st[i];
+        c.className='hc'+(clue[i]?' k'+(A.ok.has(i)&&!S.won?' ok':''):st===1?' s':st===2?' c':'')+(S.errs&&A.bad.has(i)?' e':'')+(flash===i?' h':'');
+        c.textContent=clue[i]||'';
+        c.onclick=()=>{ if(S.won||clue[i])return; api.pushUndo(); S.st[i]=(S.st[i]+1)%3; api.commit(); };
+        board.appendChild(c);
+      }
+    },
+    hint(S){
+      const {sol,clue}=S.puz, N=S.n*S.n;
+      const wrong=U.range(N).filter(i=>!clue[i]&&((S.st[i]===1&&sol[i]!==2)||(S.st[i]===2&&sol[i]===2)));
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta casilla estaba mal'}; }
+      const open=U.range(N).filter(i=>!clue[i]&&S.st[i]===0);
+      if(!open.length) return null;
+      const bl=open.filter(i=>sol[i]===2), i=U.pick(bl.length?bl:open);
+      S.st[i]=sol[i]===2?1:2;
+      return {i,msg:sol[i]===2?'Esta va en negro':'Esta queda blanca'};
+    }
+  });
+})();
+
+/* ================== GOKIGEN (SLANT) ================== */
+(()=>{
+  // casilla: 0 vacía, 1 "\" , 2 "/"
+  const endsOf=(i,k,n)=>{const W=n+1,r=i/n|0,c=i%n;return k===1?[r*W+c,(r+1)*W+c+1]:[r*W+c+1,(r+1)*W+c]};
+  const incCache={};
+  const incident=n=>incCache[n]||(incCache[n]=(()=>{const V=(n+1)*(n+1),inc=Array.from({length:V},()=>[]);for(let i=0;i<n*n;i++)for(const k of [1,2])for(const v of endsOf(i,k,n))inc[v].push([i,k]);return inc})());
+  function dsu(V){const p=Int32Array.from({length:V},(_,i)=>i);const f=x=>{while(p[x]!==x){p[x]=p[p[x]];x=p[x]}return x};return {f,u(a,b){a=f(a);b=f(b);if(a===b)return false;p[a]=b;return true}}}
+  function fill(n){
+    const D=dsu((n+1)*(n+1)), s=new Array(n*n).fill(0);
+    for(const i of U.shuffle(U.range(n*n))){
+      let done=false;
+      for(const k of Math.random()<.5?[1,2]:[2,1]){ const [a,b]=endsOf(i,k,n); if(D.f(a)!==D.f(b)){D.u(a,b);s[i]=k;done=true;break} }
+      if(!done) return null;
+    }
+    return s;
+  }
+  const counts=(s,n)=>incident(n).map(L=>L.reduce((a,[i,k])=>a+(s[i]===k),0));
+  function solve(clue,n,limit,maxNodes){
+    const N=n*n, V=(n+1)*(n+1), inc=incident(n), sols=[]; let nodes=0,aborted=false;
+    const near=new Uint8Array(N); for(let v=0;v<V;v++) if(clue[v]>=0) for(const [i] of inc[v]) near[i]=1;
+    function prop(s){
+      let ch=true;
+      while(ch){
+        ch=false;
+        for(let v=0;v<V;v++){ const t=clue[v]; if(t<0)continue;
+          let touch=0,unk=0; for(const [i,k] of inc[v]){ if(s[i]===k)touch++; else if(!s[i])unk++; }
+          if(touch>t||touch+unk<t) return false;
+          if(unk&&(touch===t||touch+unk===t)) for(const [i,k] of inc[v]) if(!s[i]){ s[i]=touch===t?3-k:k; ch=true; }
+        }
+        const D=dsu(V);
+        for(let i=0;i<N;i++) if(s[i]){ const [a,b]=endsOf(i,s[i],n); if(!D.u(a,b)) return false; }
+        for(let i=0;i<N;i++) if(!s[i]){
+          const l1=(([a,b])=>D.f(a)===D.f(b))(endsOf(i,1,n)), l2=(([a,b])=>D.f(a)===D.f(b))(endsOf(i,2,n));
+          if(l1&&l2) return false;
+          if(l1||l2){ s[i]=l1?2:1; ch=true; const [a,b]=endsOf(i,s[i],n); D.u(a,b); }
+        }
+      }
+      return true;
+    }
+    (function rec(s){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(s))return;
+      let i=-1; for(let j=0;j<N;j++) if(!s[j]&&near[j]){i=j;break}
+      if(i<0) i=s.indexOf(0);
+      if(i<0){ sols.push(Array.from(s)); return; }
+      for(const k of [1,2]){ const t=s.slice(); t[i]=k; rec(t); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(N));
+    return {sols,aborted};
+  }
+  function loopCells(s,n){ // casillas cuyas diagonales forman parte de un ciclo
+    const V=(n+1)*(n+1), deg=new Int32Array(V), adj=Array.from({length:V},()=>[]);
+    s.forEach((k,i)=>{ if(!k)return; const [a,b]=endsOf(i,k,n); deg[a]++;deg[b]++; adj[a].push([b,i]); adj[b].push([a,i]); });
+    const dead=new Uint8Array(V), q=[]; for(let v=0;v<V;v++) if(deg[v]===1) q.push(v);
+    while(q.length){ const v=q.pop(); if(dead[v])continue; dead[v]=1; for(const [w] of adj[v]) if(!dead[w]&&--deg[w]===1) q.push(w); }
+    const out=new Set(); s.forEach((k,i)=>{ if(!k)return; const [a,b]=endsOf(i,k,n); if(!dead[a]&&!dead[b]&&deg[a]>=2&&deg[b]>=2) out.add(i); });
+    return out;
+  }
+  register({
+    id:'gokigen', name:'Gokigen',
+    jp:true,
+    desc:'Traza una diagonal en cada casilla: los números dicen cuántas tocan cada esquina, sin cerrar ningún bucle.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M8 8H60V60H8Z M34 8V60 M8 34H60" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+      <path d="M8 8L34 34 M60 8L34 34 M8 60L34 34 M34 60L60 34" stroke="var(--user)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="34" cy="34" r="7" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/><text x="34" y="38" font-size="10" font-weight="800" text-anchor="middle" fill="var(--ink)">4</text>
+      <circle cx="8" cy="34" r="6" fill="var(--card)" stroke="var(--ink)" stroke-width="1.5"/><text x="8" y="37.5" font-size="9" font-weight="800" text-anchor="middle" fill="var(--ink)">0</text></svg>`,
+    sizes:[5,6,7,8,10], defaultSize:6,
+    rules:`<ol>
+      <li>Traza una <b>diagonal</b> (\\ o /) en cada casilla.</li>
+      <li>Los números de los cruces dicen <b>cuántas diagonales tocan</b> esa esquina (de 0 a 4).</li>
+      <li>Las diagonales no pueden formar ningún <b>bucle cerrado</b>.</li></ol>
+      <ul><li>Toca una casilla: \\ → / → vacía.</li>
+      <li>Los números cumplidos se atenúan; con «Marcar errores» los bucles salen en rojo.</li>
+      <li>Truco: un 0 obliga a las cuatro casillas de alrededor a apartarse de él, y un 4 a apuntarle todas.</li></ul>`,
+    generate(n){
+      for(;;){
+        const s=fill(n); if(!s)continue;
+        const clue=counts(s,n), V=clue.length;
+        let r=solve(clue,n,2,20000); if(r.aborted||r.sols.length!==1)continue;
+        const t0=performance.now();
+        for(const v of U.shuffle(U.range(V))){
+          if(performance.now()-t0>3000)break;
+          const k=clue[v]; clue[v]=-1;
+          r=solve(clue,n,2,4000);
+          if(r.aborted||r.sols.length!==1) clue[v]=k;
+        }
+        return {clue,sol:s};
+      }
+    },
+    init:(puz,n)=>new Array(n*n).fill(0),
+    solved(S){
+      const n=S.n; if(S.st.some(x=>!x))return false;
+      const c=counts(S.st,n); if(S.puz.clue.some((t,v)=>t>=0&&c[v]!==t))return false;
+      return loopCells(S.st,n).size===0;
+    },
+    render(board,S,api,flash){
+      const n=S.n, W=n+1, st=S.st, {clue}=S.puz, inc=incident(n), loops=S.errs?loopCells(st,n):new Set();
+      let h=`<svg viewBox="-.5 -.5 ${n+1} ${n+1}"><rect class="bg" x="0" y="0" width="${n}" height="${n}"/>`;
+      for(let k=1;k<n;k++) h+=`<line class="gl" x1="${k}" y1="0" x2="${k}" y2="${n}"/><line class="gl" x1="0" y1="${k}" x2="${n}" y2="${k}"/>`;
+      if(flash>=0&&flash<n*n) h+=`<rect class="hl" x="${flash%n}" y="${flash/n|0}" width="1" height="1"/>`;
+      st.forEach((k,i)=>{ if(!k)return; const r=i/n|0,c=i%n;
+        h+=`<line class="sl${loops.has(i)?' e':''}" x1="${c+(k===1?.08:.92)}" y1="${r+.08}" x2="${c+(k===1?.92:.08)}" y2="${r+.92}"/>`; });
+      for(let v=0;v<W*W;v++){ const t=clue[v]; if(t<0)continue;
+        let touch=0,unk=0; for(const [i,k] of inc[v]){ if(st[i]===k)touch++; else if(!st[i])unk++; }
+        const cls=(S.errs&&(touch>t||touch+unk<t))?' e':(touch===t&&!unk?' ok':'');
+        h+=`<circle class="vc${cls}" cx="${v%W}" cy="${v/W|0}" r=".27"/><text class="vt${cls}" x="${v%W}" y="${v/W|0}">${t}</text>`; }
+      board.className='board gk';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'</svg>';
+      board.onpointerdown=null; board.onpointermove=null; board.onpointerup=null;
+      board.onclick=e=>{
+        const S2=api.S; if(!S2||S2.won)return;
+        const r=board.getBoundingClientRect(), x=(e.clientX-r.left)/r.width*(n+1)-.5, y=(e.clientY-r.top)/r.height*(n+1)-.5;
+        const cc=Math.max(0,Math.min(n-1,Math.floor(x))), rr=Math.max(0,Math.min(n-1,Math.floor(y))), i=rr*n+cc;
+        api.pushUndo(); S2.st[i]=(S2.st[i]+1)%3; api.commit();
+      };
+    },
+    hint(S){
+      const sol=S.puz.sol, N=S.n*S.n;
+      const wrong=U.range(N).filter(i=>S.st[i]&&S.st[i]!==sol[i]);
+      if(wrong.length){ const i=U.pick(wrong); S.st[i]=0; return {i,msg:'Esta diagonal iba al revés'}; }
+      const open=U.range(N).filter(i=>!S.st[i]);
+      if(!open.length) return null;
+      const i=U.pick(open); S.st[i]=sol[i];
+      return {i,msg:'Aquí va '+(sol[i]===1?'\\':'/')};
+    }
+  });
+})();
+
+/* ================== SLITHERLINK ================== */
+(()=>{
+  // aristas: horizontales r*n+c (r 0..n, c 0..n-1); verticales H+r*(n+1)+c (r 0..n-1, c 0..n)
+  const geoCache={};
+  const geo=n=>geoCache[n]||(geoCache[n]=(()=>{
+    const W=n+1, H=W*n, M=2*H, cellE=[], vertE=Array.from({length:W*W},()=>[]), ends=[];
+    for(let r=0;r<n;r++)for(let c=0;c<n;c++) cellE.push([r*n+c,(r+1)*n+c,H+r*W+c,H+r*W+c+1]);
+    for(let e=0;e<M;e++){ let a,b; if(e<H){const r=e/n|0,c=e%n;a=r*W+c;b=a+1}else{const x=e-H,r=x/W|0,c=x%W;a=r*W+c;b=a+W} ends.push([a,b]); vertE[a].push(e); vertE[b].push(e); }
+    return {W,H,M,cellE,vertE,ends};
+  })());
+  function boundary(inS,n){ // aristas del borde de un conjunto de casillas, o null si no es un único lazo
+    const g=geo(n), E=new Uint8Array(g.M), isIn=(r,c)=>!!(r>=0&&c>=0&&r<n&&c<n&&inS[r*n+c]);
+    for(let e=0;e<g.M;e++){ if(e<g.H){const r=e/n|0,c=e%n; E[e]=isIn(r-1,c)!==isIn(r,c)?1:0} else {const x=e-g.H,r=x/g.W|0,c=x%g.W; E[e]=isIn(r,c-1)!==isIn(r,c)?1:0} }
+    return checkLoop(E,n)?E:null;
+  }
+  function checkLoop(E,n,clue){
+    const g=geo(n); let start=-1,cnt=0;
+    for(let v=0;v<g.W*g.W;v++){ const d=g.vertE[v].reduce((a,e)=>a+E[e],0); if(d!==0&&d!==2)return false; if(d){cnt++;if(start<0)start=v} }
+    if(start<0)return false;
+    if(clue) for(let i=0;i<n*n;i++) if(clue[i]>=0&&g.cellE[i].reduce((a,e)=>a+E[e],0)!==clue[i]) return false;
+    let prev=-1,cur=start,len=0;
+    do{ const e=g.vertE[cur].find(e=>E[e]&&e!==prev); prev=e; const [a,b]=g.ends[e]; cur=a===cur?b:a; len++; if(len>cnt)return false; }while(cur!==start);
+    return len===cnt;
+  }
+  function randomLoop(n){
+    const N=n*n, gm=U.geometry(n), inS=new Uint8Array(N);
+    inS[Math.random()*N|0]=1;
+    const target=N*(0.42+Math.random()*0.15); let k=1;
+    for(let it=0;it<N*15&&k<target;it++){
+      const cand=[],thin=[];
+      for(let i=0;i<N;i++) if(!inS[i]){ const m=gm.nb[i].filter(j=>inS[j]).length; if(m){cand.push(i); if(m===1)thin.push(i)} }
+      if(!cand.length)break;
+      const f=U.pick(thin.length&&Math.random()<0.7?thin:cand); inS[f]=1;
+      if(!boundary(inS,n)){inS[f]=0;continue}
+      k++;
+    }
+    return boundary(inS,n);
+  }
+  function solve(clue,n,limit,maxNodes){
+    const g=geo(n), V=g.W*g.W, sols=[]; let nodes=0,aborted=false;
+    function prop(E){
+      let ch=true;
+      const set=(e,v)=>{ if(E[e]===v)return true; if(E[e]>=0)return false; E[e]=v; ch=true; return true; };
+      while(ch){
+        ch=false;
+        for(let v=0;v<V;v++){ const es=g.vertE[v]; let yes=0,unk=0; for(const e of es){ if(E[e]===1)yes++; else if(E[e]<0)unk++; }
+          if(yes>2||(yes===1&&!unk)) return false;
+          if(!unk)continue;
+          if(yes===2||(yes===0&&unk===1)) for(const e of es) if(E[e]<0) set(e,0);
+          if(yes===1&&unk===1) for(const e of es) if(E[e]<0) set(e,1);
+        }
+        for(let i=0;i<n*n;i++){ const t=clue[i]; if(t<0)continue; const es=g.cellE[i]; let yes=0,unk=0; for(const e of es){ if(E[e]===1)yes++; else if(E[e]<0)unk++; }
+          if(yes>t||yes+unk<t) return false;
+          if(unk&&(yes===t||yes+unk===t)) for(const e of es) if(E[e]<0) set(e,yes===t?0:1);
+        }
+        if(ch)continue;
+        // evitar cerrar lazos pequeños antes de tiempo
+        const comp=new Int32Array(V).fill(-1), info=[];
+        for(let s=0;s<V;s++){ if(comp[s]>=0||!g.vertE[s].some(e=>E[e]===1))continue;
+          const k=info.length, q=[s], endp=[]; comp[s]=k; let cyc=true;
+          while(q.length){ const a=q.pop(); let d=0; for(const e of g.vertE[a]) if(E[e]===1){ d++; const [x,y]=g.ends[e], b=x===a?y:x; if(comp[b]<0){comp[b]=k;q.push(b)} } if(d===1){endp.push(a);cyc=false} }
+          info.push({endp,cyc}); }
+        for(const I of info){
+          if(I.cyc){ if(info.length>1) return false; for(let e=0;e<g.M;e++) if(E[e]<0) E[e]=0; return true; }
+        }
+        if(info.length>1) for(const I of info){ const [a,b]=I.endp; const e=g.vertE[a].find(e=>g.vertE[b].includes(e)); if(e!==undefined&&E[e]<0) set(e,0); }
+      }
+      return true;
+    }
+    (function rec(E){
+      if(sols.length>=limit||aborted)return;
+      if(++nodes>maxNodes){aborted=true;return}
+      if(!prop(E))return;
+      let pick=-1;
+      for(let v=0;v<V&&pick<0;v++){ let yes=0; for(const e of g.vertE[v]) if(E[e]===1)yes++; if(yes===1) pick=g.vertE[v].find(e=>E[e]<0)??-1; }
+      if(pick<0) for(let i=0;i<n*n&&pick<0;i++) if(clue[i]>=0) pick=g.cellE[i].find(e=>E[e]<0)??-1;
+      if(pick<0) pick=E.indexOf(-1);
+      if(pick<0){ if(checkLoop(E,n,clue)) sols.push(Array.from(E)); return; }
+      for(const v of [1,0]){ const F=E.slice(); F[pick]=v; rec(F); if(sols.length>=limit||aborted)return; }
+    })(new Int8Array(geo(n).M).fill(-1));
+    return {sols,aborted};
+  }
+  function generate(n){
+    const g=geo(n);
+    for(;;){
+      const E=randomLoop(n); if(!E)continue;
+      const clue=g.cellE.map(es=>es.reduce((a,e)=>a+E[e],0));
+      let r=solve(clue,n,2,30000); if(r.aborted||r.sols.length!==1)continue;
+      const t0=performance.now();
+      for(const i of U.shuffle(U.range(n*n))){
+        if(performance.now()-t0>3500)break;
+        const k=clue[i]; clue[i]=-1;
+        r=solve(clue,n,2,6000);
+        if(r.aborted||r.sols.length!==1) clue[i]=k;
+      }
+      return {clue,sol:Array.from(E)};
+    }
+  }
+  register({
+    id:'slitherlink', name:'Slitherlink', jp:true,
+    desc:'Traza un único lazo por las líneas de la cuadrícula: cada número dice cuántos lados suyos usa.',
+    icon:`<svg viewBox="0 0 68 68"><rect width="68" height="68" rx="10" fill="var(--card)" stroke="var(--line)"/>
+      <path d="M14 14H54V34H34V54H14Z" fill="none" stroke="var(--user)" stroke-width="4" stroke-linejoin="round"/>
+      ${[14,34,54].map(y=>[14,34,54].map(x=>`<circle cx="${x}" cy="${y}" r="2.5" fill="var(--ink)"/>`).join('')).join('')}
+      <g font-size="12" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="24" y="28">2</text><text x="44" y="28">3</text><text x="24" y="48">3</text><text x="44" y="48">0</text></g></svg>`,
+    sizes:[5,6,7,8], defaultSize:6,
+    rules:`<ol>
+      <li>Une puntos con líneas horizontales y verticales para formar un <b>único lazo cerrado</b>, sin cruces ni ramas.</li>
+      <li>Cada número dice cuántos de los <b>cuatro lados</b> de su casilla forman parte del lazo. Las casillas sin número pueden tener cualquier cantidad.</li></ol>
+      <ul><li><b>Arrastra</b> de punto en punto para dibujar; si empiezas sobre una línea, la borras.</li>
+      <li>Toca cerca de un lado: línea → ✕ (aquí no hay línea) → vacío.</li>
+      <li>Truco: alrededor de un 0 no hay ninguna línea, y dos 3 pegados comparten la línea que los separa.</li></ul>`,
+    generate,
+    init:(puz,n)=>new Array(geo(n).M).fill(0),   // 0 vacío, 1 línea, 2 ✕
+    solved(S){ return checkLoop(S.st.map(x=>x===1?1:0),S.n,S.puz.clue); },
+    render(board,S,api,flash){
+      const n=S.n, g=geo(n), st=S.st, {clue}=S.puz, P=.35;
+      const pt=v=>[v%g.W,v/g.W|0];
+      let h=`<svg viewBox="${-P} ${-P} ${n+2*P} ${n+2*P}">`;
+      st.forEach((x,e)=>{ if(!x)return; const [a,b]=g.ends[e], [x1,y1]=pt(a), [x2,y2]=pt(b);
+        if(x===1) h+=`<line class="ln${flash===e?' h':''}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        else { const mx=(x1+x2)/2,my=(y1+y2)/2,d=.09; h+=`<path class="xx" d="M${mx-d} ${my-d}L${mx+d} ${my+d}M${mx+d} ${my-d}L${mx-d} ${my+d}"/>`; } });
+      if(flash>=0&&flash<g.M&&!st[flash]){}
+      for(let v=0;v<g.W*g.W;v++){ const [x,y]=pt(v), d=g.vertE[v].reduce((a,e)=>a+(st[e]===1),0);
+        h+=`<circle class="dt${S.errs&&d>2?' e':''}" cx="${x}" cy="${y}" r="${S.errs&&d>2?.11:.075}"/>`; }
+      for(let i=0;i<n*n;i++){ const t=clue[i]; if(t<0)continue;
+        let yes=0,no=0; for(const e of g.cellE[i]){ if(st[e]===1)yes++; else if(st[e]===2)no++; }
+        const cls=S.errs&&(yes>t||4-no<t)?' e':(yes===t&&yes+no===4)?' ok':'';
+        h+=`<text class="cl${cls}" x="${i%n+.5}" y="${(i/n|0)+.5}">${t}</text>`; }
+      board.className='board sl';
+      board.innerHTML='<div class="gen">Generando…</div>'+h+'</svg>';
+      const toGrid=e=>{const r=board.getBoundingClientRect();return [(e.clientX-r.left)/r.width*(n+2*P)-P,(e.clientY-r.top)/r.height*(n+2*P)-P]};
+      const vertAt=(x,y)=>{const c=Math.round(x),r=Math.round(y);if(c<0||r<0||c>n||r>n)return -1;return Math.hypot(x-c,y-r)<.38?r*g.W+c:-1};
+      board.onclick=null;
+      board.onpointerdown=e=>{
+        const S2=api.S; if(!S2||S2.won)return;
+        e.preventDefault(); try{board.setPointerCapture(e.pointerId)}catch(_){}
+        const [x,y]=toGrid(e); board._g={x,y,v:vertAt(x,y),mode:null,moved:false,changed:false};
+        api.pushUndo();
+      };
+      board.onpointermove=e=>{
+        const G=board._g; if(!G)return;
+        const [x,y]=toGrid(e), v=vertAt(x,y);
+        if(Math.hypot(x-G.x,y-G.y)>.3) G.moved=true;
+        if(v<0||v===G.v)return;
+        if(G.v<0){G.v=v;return}
+        const ed=g.vertE[G.v].find(e=>g.vertE[v].includes(e)); G.v=v;
+        if(ed===undefined)return;
+        const S2=api.S;
+        if(G.mode===null) G.mode=S2.st[ed]===1?0:1;
+        if(S2.st[ed]!==G.mode){S2.st[ed]=G.mode;G.changed=true}
+        api.draw();
+      };
+      board.onpointerup=board.onpointercancel=e=>{
+        const G=board._g; if(!G)return; board._g=null; const S2=api.S;
+        if(!G.moved&&!G.changed&&e.type==='pointerup'){
+          const {x,y}=G, rr=Math.round(y), cc=Math.round(x);
+          const dh=Math.abs(y-rr), dv=Math.abs(x-cc); let ed=-1;
+          if(dh<=dv){ const c=Math.floor(x); if(rr>=0&&rr<=n&&c>=0&&c<n&&dh<.35) ed=rr*n+c; }
+          else { const r=Math.floor(y); if(cc>=0&&cc<=n&&r>=0&&r<n&&dv<.35) ed=g.H+r*g.W+cc; }
+          if(ed>=0){ S2.st[ed]=(S2.st[ed]+1)%3; G.changed=true; }
+        }
+        if(!G.changed) S2.undo.pop();
+        api.commit();
+      };
+    },
+    hint(S){
+      const {sol}=S.puz, M=S.st.length;
+      const wrong=U.range(M).filter(e=>(S.st[e]===1&&!sol[e])||(S.st[e]===2&&sol[e]));
+      if(wrong.length){ const e=U.pick(wrong); const was=S.st[e]; S.st[e]=0; return {i:e,msg:was===1?'Por aquí no pasa el lazo':'Aquí sí pasa el lazo'}; }
+      const miss=U.range(M).filter(e=>sol[e]&&S.st[e]!==1);
+      if(!miss.length) return null;
+      const e=U.pick(miss); S.st[e]=1;
+      return {i:e,msg:'El lazo pasa por aquí'};
+    }
+  });
+})();
+
+
 /* ================== marco común: portada + partida ================== */
 const app=document.getElementById('app');
 let cleanup=null;
@@ -2979,10 +3940,12 @@ function home(){
   app.innerHTML=`<header class="brand"><h1>Aenigmaton</h1><span>juegos de lógica</span></header>
     <div class="home-sub">Elige un juego. Cada partida es nueva y tiene solución única.</div>
     <a class="histlink" href="#historial">📚 Puzzles resueltos <span>${(U.load('historial')||[]).length}</span></a>
-    <div class="cards"></div>
-    <div class="soon">Más juegos próximamente…</div>`;
-  const cards=app.querySelector('.cards');
-  for(const G of GAMES){
+    <div class="sec">De corte japonés</div><div class="cards jp"></div>
+    <div class="sec">Otros juegos</div><div class="cards ot"></div>`;
+  const JP=new Set(['hitori','fillomino','suguru','kakuro','nurikabe','hashi','masyu','futoshiki','lits']);
+  const lists=[...GAMES].sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  for(const G of lists){
+    const cards=app.querySelector((G.jp||JP.has(G.id))?'.cards.jp':'.cards.ot');
     const S=U.load('game-'+G.id), b=U.load('best-'+G.id)||{};
     let stat='';
     const lab=k=>{ const [m,n]=String(k).includes('-')?String(k).split('-'):[null,k]; const md=m&&G.modes&&G.modes.find(x=>x.id===m); return (md?md.short+' ':'')+(G.sizeLabel?G.sizeLabel(+n):n+'×'+n); };

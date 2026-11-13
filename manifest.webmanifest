@@ -1,7 +1,7 @@
 {
   "name": "Aenigmaton",
   "short_name": "Aenigmaton",
-  "description": "Aenigmaton: Hitori, Kakuro, Star Battle, Nurikabe y muchos más juegos de lógica generados al vuelo.",
+  "description": "Aenigmaton: Sudoku, KenKen, Slitherlink, Hitori, Kakuro, Nurikabe y muchos más juegos de lógica generados al vuelo.",
   "lang": "es",
   "start_url": "./",
   "scope": "./",
